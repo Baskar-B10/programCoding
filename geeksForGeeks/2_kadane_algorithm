@@ -1,0 +1,26 @@
+Maximum sum of an subarray
+input: [2,3,-8,7,-1,2,3]
+output: 11
+
+explaination: sum of 7,-1,2 and 3 is 11
+
+Logic:
+if inbetween cause negative than before then remove those anyway no use to add in array.
+kadanes algorithm, check the current sum , if its neagtive reset it with current index place -  sum = Math.max(arr[i],sum+arr[i]);
+find max by adding each with existing max
+
+class Solution {
+    int maxSubarraySum(int[] arr) {
+        // Code here
+        int maxSum=arr[0];
+        int sum=arr[0];
+        for (int i=1; i<arr.length; i++){
+            sum = Math.max(arr[i],sum+arr[i]);
+            
+            maxSum= Math.max(maxSum,sum);
+            
+        }
+        return maxSum;
+        
+    }
+}

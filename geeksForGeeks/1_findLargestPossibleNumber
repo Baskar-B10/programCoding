@@ -1,0 +1,31 @@
+input : n=2, s=9;
+ouput: 90
+
+input : n=3, s=20
+ouput : 992
+
+logic :
+9 is the highest number so considering number starts with 9
+reduce number from sum for every iteration
+store the results in string appened
+not possible for s=0 for n>1 and s > 9*n( even if everything 9 in digit , thier sum is less than given sum)
+
+class Solution {
+    static String findLargest(int n, int s) {
+        // code here
+        if(s==0){
+            return (n==1) ? "0" : "-1";
+        }
+        if(s > 9*n){
+            return "-1";
+        }
+        
+        StringBuilder result = new StringBuilder();
+        for(int i=0; i<n; i++){
+            int digit = Math.min(9,s);
+            result.append(digit);
+            s = s-digit;
+        }
+        return result.toString();
+    }
+}

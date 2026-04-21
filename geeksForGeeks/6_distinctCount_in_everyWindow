@@ -1,0 +1,46 @@
+arr = [1,2,1,3,4,2,3], k = 4
+
+[1,2,1,3] → 3
+[2,1,3,4] → 4
+[1,3,4,2] → 4
+[3,4,2,3] → 3
+output =[3,4,4,3]
+
+logic:
+use map to find the distinct element count instead of set (since 👉 Set will remove it completely ❌ 👉 But it should still be counted ✅)
+use silding window logic to count the frequnecy and key
+if frq is 0 then remove the key from map
+left = prev value to be removed
+right = new value need to be added
+
+class Solution {
+    ArrayList<Integer> countDistinct(int arr[], int k) {
+        ArrayList<Integer> result = new ArrayList<>();
+        Map<Integer, Integer> map = new HashMap<>();
+
+        // Step 1: First window
+        for (int i = 0; i < k; i++) {
+            map.put(arr[i], map.getOrDefault(arr[i], 0) + 1);
+        }
+        result.add(map.size());
+
+        // Step 2: Sliding window
+        for (int i = k; i < arr.length; i++) {
+
+            // Remove outgoing element
+            int left = arr[i - k];
+            map.put(left, map.get(left) - 1);
+            if (map.get(left) == 0) {
+                map.remove(left);
+            }
+
+            // Add incoming element
+            int right = arr[i];
+            map.put(right, map.getOrDefault(right, 0) + 1);
+
+            result.add(map.size());
+        }
+
+        return result;
+    }
+}

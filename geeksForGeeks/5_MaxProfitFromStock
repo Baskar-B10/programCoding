@@ -1,0 +1,36 @@
+[7, 1, 5, 3, 6, 4]
+output = 5
+logic :
+profit = sell -buy 
+best Profit [i] = price[i] - minimum price 
+
+find lowest price so far in iteration
+if not calculate the profit 
+compare with maximum profit
+
+class Solution {
+    public int maxProfit(int[] prices) {
+        // Code here
+        int minPrice = Integer.MAX_VALUE;
+        int maxPrice =0;
+        
+        for (int price: prices){
+            if(price <minPrice){
+                minPrice= price;
+            }else{
+                int profit = price - minPrice;
+                maxPrice = Math.max(maxPrice, profit);
+            }
+        }
+        return maxPrice;
+    }
+}
+
+| Day | Price | Min So Far | Profit | Max Profit |
+| --- | ----- | ---------- | ------ | ---------- |
+| 0   | 7     | 7          | 0      | 0          |
+| 1   | 1     | 1          | 0      | 0          |
+| 2   | 5     | 1          | 4      | 4          |
+| 3   | 3     | 1          | 2      | 4          |
+| 4   | 6     | 1          | 5      | 5 ✅        |
+| 5   | 4     | 1          | 3      | 5          |

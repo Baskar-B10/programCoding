@@ -1,0 +1,34 @@
+arr = [1,2,3,4,5], d = 2
+Result: [3,4,5,1,2]
+
+logic :
+Rotation	Formula
+Left	(i + d) % n
+Right	(i - d + n) % n
+
+class Solution {
+    static void rotateArr(int arr[], int d) {
+        // code here
+        int size = arr.length;
+        int [] outputArray = new int[size];
+
+            d= d%size;
+
+        
+        for (int i= 0; i<size; i++){
+           outputArray[i] = arr[(i+d) % size];
+
+        }
+        for (int i=0; i<size; i++){
+            arr[i] = outputArray[i];
+        }
+    }
+}
+
+| i | (i+d)%n | value |
+| - | ------- | ----- |
+| 0 | 2       | 3     |
+| 1 | 3       | 4     |
+| 2 | 4       | 5     |
+| 3 | 0       | 1     |
+| 4 | 1       | 2     |

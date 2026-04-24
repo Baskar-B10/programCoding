@@ -1,0 +1,125 @@
+arr = [5, 3, 2, 4, 1]
+output : 8
+
+
+Logic:
+[5, 3, 2, 4, 1]
+        ↓
+[5, 3]        [2, 4, 1]
+  ↓              ↓
+[5] [3]     [2] [4, 1]
+                 ↓
+               [4] [1]
+
+Step 2: Start Merging + Counting
+
+Now the magic happens 🔥
+
+🔹 Merge [5] and [3]
+
+Compare:
+
+5 > 3 → inversion
+
+👉 Count = 1
+👉 Result = [3, 5]
+
+🔹 Merge [4] and [1]
+
+Compare:
+
+4 > 1 → inversion
+
+👉 Count = 1
+👉 Result = [1, 4]
+
+🔹 Merge [2] and [1, 4]
+
+Compare step-by-step:
+
+2 > 1 → inversion
+👉 Count += 1 (only one element left in left side)
+2 ≤ 4 → no inversion
+
+👉 Result = [1, 2, 4]
+👉 Count = 1
+
+🔹 FINAL MERGE: [3, 5] and [1, 2, 4]
+
+Now the most important step 👇
+
+Compare 3 and 1
+3 > 1 → inversion
+👉 BUT not just 1!
+
+👉 Remaining elements in left = [3, 5] → 2 elements
+
+👉 Count += 2
+
+Compare 3 and 2
+3 > 2 → inversion
+👉 Remaining elements in left = [3, 5] → 2 elements
+
+👉 Count += 2
+
+Compare 3 and 4
+3 ≤ 4 → no inversion
+Compare 5 and 4
+5 > 4 → inversion
+👉 Remaining elements in left = [5] → 1 element
+
+👉 Count += 1
+
+
+| Step        | Count   |
+| ----------- | ------- |
+| [5,3]       | 1       |
+| [4,1]       | 1       |
+| [2,[1,4]]   | 1       |
+| Final merge | 5       |
+| **Total**   | **8** ✅ |
+
+
+class Solution {
+    static int inversionCount(int arr[]) {
+        // Code Here
+       return mergeSort(arr, 0, arr.length-1);
+    }
+    private static int mergeSort(int arr[], int left , int right){
+        if(left>=right){
+            return 0;
+        }
+        int mid = (left+right)/2;
+        int count=0;
+        count +=mergeSort(arr,left,mid);
+        count +=mergeSort(arr, mid+1, right);
+        count +=merge(arr,left,right,mid);
+        
+        return count;
+    }
+    
+    private static int merge(int arr[], int left, 
+        int right, int mid){
+        
+        int [] temp = new int [right-left+1];
+        int i=left, j=mid+1,  k=0 ;
+        int count=0;
+        
+        while(i<= mid && j <=right){
+            if(arr[i]<=arr[j]){
+                temp[k++]=arr[i++];
+            }else{
+                temp[k++]=arr[j++];
+                count += (mid-i+1);
+            }
+        }
+        while(i<=mid){
+            temp[k++]=arr[i++];
+        }
+        while(j<=right){
+            temp[k++]=arr[j++];
+        }
+        System.arraycopy(temp,0,arr,left,temp.length);
+        return count;
+    }
+}

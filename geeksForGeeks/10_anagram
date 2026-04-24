@@ -1,0 +1,14 @@
+input s1="geeks" s2= "skeeg"
+output true
+
+logic:
+use streams to split each character and sort them and collect as list
+
+import java.util.stream.Collectors;
+class Solution {
+    public static boolean areAnagrams(String s1, String s2) {
+        // code here
+        return s1.chars().sorted().boxed().collect(Collectors.toList())
+        .equals(s2.chars().sorted().boxed().collect(Collectors.toList()));
+    }
+}

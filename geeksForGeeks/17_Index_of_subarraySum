@@ -1,0 +1,36 @@
+arr = [2, 1, 5, 1, 3, 2]
+target = 8
+
+output: 1 to 3
+
+logic :
+need both index so keep left and right pointer
+iterate using right and add the data to sum
+if sum exceeds target then remove the left added element until it becomes less
+if its matches target sent the index
+
+class Solution {
+    static ArrayList<Integer> subarraySum(int[] arr, int target) {
+        // code here
+        ArrayList<Integer> output = new ArrayList<>();
+        int sum=0;
+        int i=0;
+        for(int j=0; j<arr.length; j++){
+            sum =sum+arr[j];
+            
+            while(sum> target){
+                sum = sum - arr[i];
+                i++;
+            }
+            
+           if(target==sum){
+               output.add(i+1);
+               output.add(j+1);
+               return output;
+           } 
+            
+        }
+        output.add(-1);
+        return output;
+    }
+}

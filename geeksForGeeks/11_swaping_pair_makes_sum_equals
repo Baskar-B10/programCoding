@@ -1,0 +1,53 @@
+A = [4,1,2,1,1,2] and B = [3,6,3,3]  output : true:
+A = [4,1,2,1,1,2] → sum = 11  
+B = [3,6,3,3]     → sum = 15  
+swap 1 and 3 becomes 12 for each
+Let:
+
+sumA = sum of array A
+sumB = sum of array B
+After swapping a (from A) and b (from B):
+  newSumA = sumA - a + b  
+  newSumB = sumB - b + a
+
+For equality: sumA - a + b = sumB - b + a
+Simplify: 2(a - b) = sumA - sumB
+So: a - b = (sumA - sumB) / 2
+
+Compute sumA and sumB
+If (sumA - sumB) is odd → ❌ Not possible
+Let diff = (sumA - sumB) / 2
+For each element a in A, check if (a - diff) exists in B
+
+
+// User function Template for Java
+
+class Solution {
+    boolean findSwapValues(int[] a, int[] b) {
+        // Your code goes here
+        int sumA= Arrays.stream(a).sum();
+        int sumB= Arrays.stream(b).sum();
+        
+        int diff= sumA-sumB;
+        
+        if(diff%2 !=0){
+            return false;
+        }
+        
+        diff = diff/2;
+        Set<Integer> setB= new HashSet<> ();
+        for (int i: b){
+            setB.add(i);
+        }
+        
+        for(int j: a){
+            int val = j-diff;
+            if(setB.contains(val)){
+                return true;
+            }
+        }
+        
+        return false;
+        
+    }
+}

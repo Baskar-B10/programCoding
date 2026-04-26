@@ -1,0 +1,16 @@
+arr = [7, 10, 4, 3, 20, 15]
+k = 3
+output: 7
+logic:
+
+sort the array 
+find the element using indexas key-1
+
+class Solution {
+    public int kthSmallest(int[] arr, int k) {
+        // Code here
+        Arrays.sort(arr);
+        return arr[k-1];
+        
+    }
+}

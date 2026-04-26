@@ -1,0 +1,28 @@
+A = [1,2,2,3]
+B = [2,2]
+output: true
+
+logic:
+1. convert a into map of key as value and value as count
+2. from the map check b exist , if exist check the count is there (i.e num should exist if count 0 then its not occuring multiple times same as A)
+3. if count exist then reduce the count
+
+
+class Solution {
+    public boolean isSubset(int a[], int b[]) {
+        // Your code here
+        Map<Integer,Integer> aFreq= new HashMap<>();
+        for(int j: a){
+            aFreq.put(j, aFreq.getOrDefault(j,0)+1);
+        }
+        for (int i: b){
+            if(!aFreq.containsKey(i) || aFreq.get(i)==0){
+                
+            
+            return false;
+            }
+            aFreq.put(i, aFreq.getOrDefault(i,0)-1);
+        }
+        return true;
+    }
+}

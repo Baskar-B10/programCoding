@@ -1,0 +1,46 @@
+input: arr = {4, 5, 6, 5, 4, 3};
+output: [4, 4, 5, 5, 3, 6]
+
+
+logic:
+Count frequency using HashMap
+Convert array to list
+Sort using custom comparator:
+  Higher frequency first
+  If equal → smaller number first
+
+
+// User function Template for Java
+
+import java.util.*;
+import java.util.stream.*;
+import java.util.function.Function;
+
+class Solution {
+    // Function to sort the array according to frequency of elements.
+    public ArrayList<Integer> sortByFreq(int arr[]) {
+        // add your code here
+        List<Integer> list =new ArrayList<>();
+        
+        
+        Map<Integer,Integer> freqMap= new HashMap<>();
+        for(int num: arr){
+            list.add(num);
+            freqMap.put(num, freqMap.getOrDefault(num,0)+1);
+        }
+                        
+        Collections.sort(list, (a,b)-> {
+            int freqA= freqMap.get(a);
+            int freqB= freqMap.get(b);
+            
+            if(freqA != freqB){
+                return freqB- freqA;
+            }
+            else{
+                return a-b;
+            }
+        });
+        
+        return new ArrayList<>(list);
+    }
+}

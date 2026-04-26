@@ -1,0 +1,48 @@
+
+Input:
+Array 1: [2, 1, 2, 3, 4]
+Array 2: [2, 1, 2]
+Output:
+[2, 2, 1, 3, 4]
+
+sort the element in a1 based on order on a2 and sort the other element at last based on natutal order
+
+logic:
+ use map to calculate the array element and its index
+ use that map and sort the array1:
+   1. both contains then check which comes first based on value in map
+   2. if one exist then return that , a exist return -1 if b exist return 1
+   3. else sort by order
+
+class Solution {
+    static void relativeSort(int[] a1, int[] a2) {
+        // code here
+        Map<Integer,Integer> orderMap= new HashMap<>();
+        for(int n=0;n< a2.length;n++){
+            if(!orderMap.containsKey(a2[n])){
+                orderMap.put(a2[n],n);
+            }
+        }
+        
+        Integer[] temp =Arrays.stream(a1).boxed().toArray(Integer[]:: new);
+        
+        Arrays.sort(temp, (a,b)-> {
+            if(orderMap.containsKey(a) && orderMap.containsKey(b)){
+                return orderMap.get(a)-orderMap.get(b);
+            }
+            else if (orderMap.containsKey(a)){
+                return -1;
+            }
+            else if (orderMap.containsKey(b)){
+                return 1;
+            }
+            else{
+                return a-b;
+            }
+        });
+        
+        for(int i=0; i<temp.length; i++){
+            a1[i]=temp[i];
+        }
+    }
+}

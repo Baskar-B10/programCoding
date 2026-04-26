@@ -1,0 +1,32 @@
+
+arr = [0, 0, 5, 5, 0, 0]
+output :6 , 
+
+count of subarray = 0 -> sub array are 0,0,0 ,0 (0,0), (0,0)
+
+logic:
+use map to hold the sum with its count
+if map contains sum while itearte then add the count into the count
+  why we are checking sum in map becoz same sum exist means the subarray count =0
+we are holding the count so that we can add the number of times
+        sumMap.put(0,1); -> to initilize
+
+class Solution {
+    public int findSubarray(int[] arr) {
+        // code here.
+        int count =0;
+        int sum =0;
+        
+        Map<Integer,Integer> sumMap= new HashMap<Integer,Integer>();
+        sumMap.put(0,1);
+        for (int num: arr){
+            sum = sum+num;
+            
+            if(sumMap.containsKey(sum)){
+                count= count+ sumMap.get(sum);
+            }
+            sumMap.put(sum,sumMap.getOrDefault(sum,0)+1);
+        }
+        return count;
+    }
+}

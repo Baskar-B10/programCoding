@@ -1,0 +1,31 @@
+[100, 180, 260, 310, 40, 535, 695]
+output : 865
+
+Add All Small Profits
+
+Instead of grouping, we add every increase:
+    (180-100) = 80  
+    (260-180) = 80  
+    (310-260) = 50  
+    (535-40)  = 495  
+    (695-535) = 160  
+    
+    👉 Total: 80 + 80 + 50 + 495 + 160 = 865 ✅
+
+    check the previous is less then get the profit and add it to the total profit
+
+class Solution {
+    int stockBuySell(int arr[]) {
+        // code here
+       
+        int totalProfit= 0;
+        
+        for (int i=1; i<arr.length;  i++){
+            if(arr[i]> arr[i-1]){
+                totalProfit= totalProfit+ arr[i]- arr[i-1];
+            }
+            
+        }
+        return totalProfit;
+    }
+}

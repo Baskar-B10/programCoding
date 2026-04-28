@@ -1,0 +1,41 @@
+Input: [100, 4, 200, 1, 3, 2]
+Output: 4
+Explanation: The sequence is [1, 2, 3, 4]
+
+logic:
+use set to remove the duplicate elements in the count
+check the previous element exist as start of sequence to avoid duplicate count (if check the current one)
+use the current element and start the count 
+check next element exist then increase the count else break the loop and assign the count
+then check other not exist element 
+
+
+
+class Solution {
+
+    // Function to return length of longest subsequence of consecutive integers.
+    public int longestConsecutive(int[] arr) {
+        // code here
+        Set<Integer> set = new HashSet<>();
+
+        int maxCount =0;
+        for (int n: arr){
+            set.add(n);
+        }
+        for(int s: set){
+            if(!set.contains(s-1)){
+                
+            int currentNum =s;
+            int count =1;
+            
+            while (set.contains(currentNum+1)){
+                count++;
+                currentNum++;
+                
+            }
+            maxCount = Math.max(maxCount, count);
+            }
+        }
+        return maxCount;
+    }
+}

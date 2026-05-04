@@ -1,0 +1,24 @@
+input s1= geeksForGeeks s2= set 
+output = 1 (e comes at 1 index) - 1 if no match found
+
+logic:
+convert s2 into set 
+iterate s1 and check the character exist in set then return the index
+
+class Solution {
+    public static int minIndexChar(String s1, String s2) {
+        // code here
+         HashSet<Character> set = new HashSet<>();
+        for (char c: s2.toCharArray()){
+           set.add(c); 
+        }
+        for(int i=0; i<s1.length() ; i++){
+            
+            if(set.contains(s1.charAt(i))){
+              return i;
+            }
+        }
+
+        return -1;
+    }
+}

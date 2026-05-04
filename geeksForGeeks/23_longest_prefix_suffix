@@ -1,0 +1,45 @@
+input : abab oyput = 2
+aaaa -> 3
+logic :
+
+build array to hold the longest value
+len -> length of current matching prefix and suffix 
+
+lps[i]= answer for substring 
+lps[n-1] = answer for full string
+len - length of matched 
+
+case 1: 
+  if character match -> increase len and store in lps
+case 2:
+  mismatch -> not to restart from 0 
+    take the last value from lps array so we avaoid o(n2) as O(n)
+
+every time charcter match then grow if mismatch then fallback to smaller pattern
+
+
+class Solution {
+    int getLPSLength(String s) {
+        // code here
+        int n = s.length();
+        int i=1;
+        int[] lps = new int[n];
+        int len =0;
+        while (i<n){
+            if(s.charAt(i)==s.charAt(len)){
+               len++; 
+               lps[i] =len;
+               i++;
+            }else{
+                if(len!=0){
+                    len = lps[len-1];
+                }else{
+                    lps[i]=0;
+                    i++;
+                }
+            }
+        }
+        
+        return lps[n-1];
+    }
+}

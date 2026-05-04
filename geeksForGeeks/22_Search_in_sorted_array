@@ -1,0 +1,21 @@
+input: matrix [[1 4 3] [14 20 21] [30 34 43]]
+output : true
+
+logic :
+iterate the matrix with row as i < mat.length
+iterate the column in it as j <mat[i].length
+match the number then return true
+
+class Solution {
+    public boolean searchMatrix(int[][] mat, int x) {
+        // code here
+        for (int i=0; i<mat.length; i++){
+            for(int j=0 ; j< mat[i].length; j++){
+                if(x==mat[i][j]){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+}

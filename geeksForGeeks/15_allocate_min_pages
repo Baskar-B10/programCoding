@@ -1,0 +1,97 @@
+books = [12, 34, 67, 90]
+students = 2
+Output: 113
+
+Why Binary Search?
+Minimum possible answer = max(pages[])
+Maximum possible answer = sum(pages[])
+
+🔹 Core Idea
+  We guess a value (mid) = maximum pages a student can take
+    Then check:“Is it possible to allocate books within this limit?”
+  
+  🔹 Steps (Algorithm)
+    ✅ Step 1: Define search space
+        low = max(pages)
+        high = sum(pages)
+    ✅ Step 2: Binary Search
+        Repeat until low <= high:
+        mid = (low + high) / 2
+    Check feasibility:
+        If possible → try smaller value → high = mid - 1
+        If not → increase → low = mid + 1
+🔹 Feasibility Function
+      students_required = 1
+      current_pages = 0
+      
+      for each book:
+          if current_pages + book <= mid:
+              add book
+          else:
+              students_required++
+              current_pages = book
+      
+      if students_required <= m:
+          feasible
+      else:
+          not feasible
+
+public class AllocatePages {
+
+    public static boolean isPossible(int[] arr, int n, int m, int mid) {
+        int students = 1;
+        int pages = 0;
+
+        for (int i = 0; i < n; i++) {
+            if (arr[i] > mid) return false;
+
+            if (pages + arr[i] <= mid) {
+                pages += arr[i];
+            } else {
+                students++;
+                pages = arr[i];
+            }
+        }
+
+        return students <= m;
+    }
+
+    public static int findPages(int[] arr, int n, int m) {
+        if (m > n) return -1;
+
+        int low = 0, high = 0;
+
+        for (int i = 0; i < n; i++) {
+            high += arr[i];
+            low = Math.max(low, arr[i]);
+        }
+
+        int res = -1;
+
+        while (low <= high) {
+            int mid = (low + high) / 2;
+
+            if (isPossible(arr, n, m, mid)) {
+                res = mid;
+                high = mid - 1;
+            } else {
+                low = mid + 1;
+            }
+        }
+
+        return res;
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {12, 34, 67, 90};
+        int m = 2;
+
+        System.out.println(findPages(arr, arr.length, m)); // 113
+    }
+}
+
+Time Complexity
+Binary Search: log(sum)
+Feasibility check: O(n)
+
+👉 Total: O(n log sum)

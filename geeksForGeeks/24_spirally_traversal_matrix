@@ -1,0 +1,152 @@
+1   2   3   4
+5   6   7   8
+9  10  11  12
+
+output: 1 → 2 → 3 → 4 → 8 → 12 → 11 → 10 → 9 → 5 → 6 → 7
+
+logic:
+
+  We use 4 boundaries:
+    top → starting row
+    bottom → ending row
+    left → starting column
+    right → ending column
+
+👉 Move in 4 directions:
+      Left → Right
+      Top → Bottom
+      Right → Left
+      Bottom → Top
+
+Then shrink boundaries and repeat.
+
+Step-by-Step Algorithm
+
+Initialize:
+    top = 0
+    bottom = n - 1
+    left = 0
+    right = m - 1
+    
+🔸 Loop until boundaries cross
+    1️⃣ Left → Right (Top row)
+      for i = left to right → print matrix[top][i]
+      top++
+    2️⃣ Top → Bottom (Right column)
+      for i = top to bottom → print matrix[i][right]
+      right--
+    3️⃣ Right → Left (Bottom row)
+      if top <= bottom:
+          for i = right to left → print matrix[bottom][i]
+          bottom--
+    4️⃣ Bottom → Top (Left column)
+      if left <= right:
+          for i = bottom to top → print matrix[i][left]
+          left++
+
+class Solution {
+    public ArrayList<Integer> spirallyTraverse(int[][] mat) {
+        // code here
+        ArrayList<Integer> result = new ArrayList<Integer>();
+        
+        int top =0;
+        int left =0;
+        int right = mat[0].length -1;
+        int bottom = mat.length -1;
+         while (top <= bottom  && left <=right){
+             // left to right
+             for (int i=left; i<=right ;i++){
+                 result.add(mat[top][i]);
+             }
+             top++;
+             //top to bottom
+
+             for(int i=top;i <=bottom ; i++ ){
+                 result.add(mat[i][right]);
+                 
+             }
+             right--;
+
+             //right to left
+             if(top<=bottom){
+             for(int i =right; i>=left ;i--){
+                 result.add(mat[bottom][i]);
+             }
+             bottom--;
+             }
+             
+             //bottom to top
+             if(left<=right){
+             for(int i = bottom ; i>=top ;i--){
+                 result.add(mat[i][left]);
+                
+             }
+             left++;
+             }
+             
+         }
+         return result;
+    }
+}
+
+🔹 Time & Space Complexity
+Time: O(n × m) (visit every element once)
+Space: O(1) (no extra space)
+
+Loop	Condition Needed?	Reason
+Left → Right	❌	Always safe
+Top → Bottom	❌	Always safe
+Right → Left	✅	Avoid duplicate row
+Bottom → Top	✅	Avoid duplicate column
+
+🔹 Why NOT needed for first two loops?
+    ✅ First loop (Left → Right)
+        for i = left to right → matrix[top][i]
+        top++
+        Runs only when top <= bottom (already ensured by while loop)
+        Safe, no duplication
+    ✅ Second loop (Top → Bottom)
+        for i = top to bottom → matrix[i][right]
+        right--
+        Also safe because boundaries are still valid
+ 🔹 Where problem happens?
+    After first two loops, boundaries shrink:
+        top increases
+        right decreases
+    
+    👉 Now sometimes:
+        top > bottom OR
+        left > right
+    🔴 Problem Case (Important)
+        Example: Single Row Matrix
+        1  2  3
+        Execution:
+        Left → Right → prints 1 2 3
+        top++ → top = 1
+    Now: 
+        top = 1, bottom = 0 ❌
+        If you DON'T check:
+        ❌ Right → Left loop runs:
+        for i = right to left → matrix[bottom][i]
+    
+    👉 It will print the same row again → duplicate output
+    🔹 Same issue for single column
+          1
+          2
+          3
+
+Without condition:
+    Bottom → Top loop repeats elements ❌
+    🔹 So we add conditions
+    ✅ Right → Left
+        if (top <= bottom)
+        👉 Only run if row still exists
+    
+    ✅ Bottom → Top
+        if (left <= right)
+        👉 Only run if column still exists  
+    🔹 Visual Intuition
+          Think of peeling layers 🧅
+          
+          After removing top row & right column,
+          Maybe no bottom row or left column is left

@@ -1,0 +1,84 @@
+    int[] arr = {2, 4, 5};
+    output :7
+
+🔹 Core Idea (Very Important)
+      We maintain a basis array:
+      basis[i] → number having highest set bit at position i
+      👉 Think:
+        One number per bit position
+        Each represents an independent XOR contributor
+🔹 Algorithm Steps
+    Step 1: Initialize
+        int[] basis = new int[32]; // for 32 bits
+    Step 2: Insert each number into basis
+        For each number x:
+        Try to reduce it using existing basis
+        Logic:
+          For bit from high → low:
+            If that bit is set in x:
+                If basis[bit] is empty → store x there ✅
+                Else → reduce: x = x ^ basis[bit]
+            
+Why this complexity?
+    Each number has at most log₂(max value) bits (≈ 31 for int)
+    For each number, we try to reduce it using existing basis elements
+    
+    👉 So:Time = O(n × number of bits) = O(n × log(max))
+
+100
+010
+001
+
+100 ^ 010 ^ 001 = 111 (max possible)
+
+🔹 Dry Run (Quick)
+    arr = [2, 4, 5]
+    Binary:
+        2 = 010
+        4 = 100
+        5 = 101
+    Build basis:
+      basis[2] = 4
+      basis[1] = 2
+      basis[0] = 1   (after reduction from 5)
+    Now maximize: 0 → 4 → 6 → 7
+
+  public class MaxSubsetXOR {
+    public static int maxSubsetXOR(int[] arr) {
+
+        int[] basis = new int[32];
+
+        // Build basis
+        for (int num : arr) {
+            int x = num;
+
+            for (int bit = 31; bit >= 0; bit--) {
+
+                if ((x & (1 << bit)) == 0) continue;
+
+                if (basis[bit] == 0) {
+                    basis[bit] = x;
+                    break;
+                }
+
+                x ^= basis[bit];
+            }
+        }
+
+        // Build maximum XOR
+        int result = 0;
+
+        for (int bit = 31; bit >= 0; bit--) {
+            if ((result ^ basis[bit]) > result) {
+                result ^= basis[bit];
+            }
+        }
+
+        return result;
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {2, 4, 5};
+        System.out.println(maxSubsetXOR(arr)); // 7
+    }
+}

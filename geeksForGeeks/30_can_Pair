@@ -1,0 +1,55 @@
+
+arr = [9, 7, 5, 3], k = 6
+output true
+arr = 4 4 4 and k = 4 output false
+
+logic:
+take the remainder balance and put its count in map
+in count ,
+  if its half value occurs twice or 2n times then it can pair
+  if 0 remainder then it also twice or 2n time then it can pair
+  if any other number then need to  (k-num) other num should exist then it can pair
+  like 1 and 5 can form 6 
+    Remainders:   
+        9 % 6 = 3
+        7 % 6 = 1
+        5 % 6 = 5
+        3 % 6 = 3
+  Pairs:
+      1 ↔ 5
+      3 ↔ 3
+
+✔ Valid → Output = true
+
+
+Case	      Rule
+rem == 0	  Count must be even
+rem == k/2	Count must be even (only if k even)
+others	    freq[r] == freq[k-r]
+
+
+class Solution {
+    public boolean canPair(List<Integer> arr, int k) {
+        // code here.
+        if(arr.size() %2 !=0){
+            return false;
+        }
+        Map<Integer, Integer> map = new HashMap<>();
+        for(Integer a: arr){
+            
+            int rem = ((a%k)+k)%k;
+            map.put(rem,map.getOrDefault(rem,0)+1);
+            
+        }
+       for(int rem : map.keySet()){
+           
+           if(rem==0 || 2* rem == k){
+               if(map.get(rem)%2 !=0) return false;
+           }
+           else {
+               if(map.get(rem) != map.getOrDefault(k-rem,0)) return false;
+           }
+       }
+       return true;
+    }
+}

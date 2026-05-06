@@ -1,0 +1,34 @@
+[[1,0,0,0][1,1,1,0][1,1,1,1],[1,1,1,0]]
+
+row 2 have maximum 1's so output is 2
+
+logic:
+
+iterate the matrix with i and j (row and column)
+check the count of 1 for each row 
+if count is greter than max value the set the max value as count and result as index of the row
+
+// User function Template for Java
+
+class Solution {
+    public int rowWithMax1s(int arr[][]) {
+        // code here
+        Map<Integer, Integer> map = new HashMap<>();
+        int max=0;
+        int result=-1;
+        for(int i=0; i< arr.length; i++){
+            int count =0;
+            for (int j=0; j< arr[i].length; j++){
+                if(arr[i][j]==1){
+                    count++;
+                }
+            }
+            if(count>max){
+                max=count;
+                result=i;
+            }
+        }
+        
+       return result;
+    }
+}

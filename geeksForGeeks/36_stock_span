@@ -1,0 +1,19 @@
+ int[] prices = {100,80,60,70,60,75,85};
+ output: [1, 1, 1, 2, 1, 4, 6]
+
+logic:
+  1. use stack to store index
+  2. if current value is greter than previous value remove those previous value from stack
+  3. check the stack 
+      if empty means highest so far so i+1 
+      else difference between previous highest to current span so i- last elemnt in stack 
+
+ | i | price | Stack     | Span |
+| - | ----- | --------- | ---- |
+| 0 | 100   | [0]       | 1    |
+| 1 | 80    | [0,1]     | 1    |
+| 2 | 60    | [0,1,2]   | 1    |
+| 3 | 70    | pop 60    | 2    |
+| 4 | 60    | push      | 1    |
+| 5 | 75    | pop 60,70 | 4    |
+| 6 | 85    | pop 75,80 | 6    |

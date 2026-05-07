@@ -1,0 +1,70 @@
+intput : 60,20,30,40,10,50,60
+output 100
+
+logic:
+  1. use stack to store the index
+  2. iterate the element and if current height < previous one then calculate maximum area using height and width 
+
+| Index | Height | Action | Area  |
+| ----- | ------ | ------ | ----- |
+| 0     | 60     | push   | -     |
+| 1     | 20     | pop 60 | 60    |
+| 2     | 30     | push   | -     |
+| 3     | 40     | push   | -     |
+| 4     | 10     | pop 40 | 40    |
+|       |        | pop 30 | 60    |
+|       |        | pop 20 | 80    |
+| 5     | 50     | push   | -     |
+| 6     | 60     | push   | -     |
+| end   | 0      | pop 60 | 60    |
+|       |        | pop 50 | 100 ✅ |
+
+After popping:
+
+current i = next smaller
+stack.peek() = previous smaller
+So valid width:n between them Hence:n = i - prevSmaller - 1
+
+import java.util.*;
+
+public class Histogram {
+
+    public static int largestRectangleArea(int[] heights) {
+
+        Stack<Integer> stack = new Stack<>();
+        int maxArea = 0;
+        int n = heights.length;
+
+        for (int i = 0; i <= n; i++) {
+
+            int currHeight = (i == n) ? 0 : heights[i];
+
+            while (!stack.isEmpty() &&
+                   currHeight < heights[stack.peek()]) {
+
+                int height = heights[stack.pop()];
+
+                int width;
+
+                if (stack.isEmpty()) {
+                    width = i;
+                } else {
+                    width = i - stack.peek() - 1;
+                }
+
+                maxArea = Math.max(maxArea, height * width);
+            }
+
+            stack.push(i);
+        }
+
+        return maxArea;
+    }
+
+    public static void main(String[] args) {
+
+        int[] heights = {2,1,5,6,2,3};
+
+        System.out.println(largestRectangleArea(heights));
+    }
+}

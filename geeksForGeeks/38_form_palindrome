@@ -1,0 +1,79 @@
+input:abcd
+output:3
+
+logic:
+Step 1
+
+Find:Longest Palindromic Subsequence
+LPS can be found using:LCS(s, reverse(s))
+
+Input:abcda
+Reverse:adcba
+LCS:aba
+Length:3
+Answer: 5 - 3 = 2
+
+✅ Case 1: Characters Match
+
+If: s.charAt(i) == s.charAt(j)
+Then:no insertion needed at ends
+So:dp[i][j] = dp[i+1][j-1]
+
+✅ Case 2: Characters Do NOT Match
+
+We insert either:
+  matching char near left
+  matching char near right
+
+Take minimum. dp[i][j] = 1 + Math.min(dp[i+1][j], dp[i][j-1]);
+
+|   | 0 | 1 | 2 | 3 | 4 |
+| - | - | - | - | - | - |
+| 0 | 0 | 1 | 2 | 3 | 2 |
+| 1 |   | 0 | 1 | 2 | 3 |
+| 2 |   |   | 0 | 1 | 2 |
+| 3 |   |   |   | 0 | 1 |
+| 4 |   |   |   |   | 0 |
+
+
+public class MinInsertionPalindrome {
+
+    public static int minInsertions(String s) {
+
+        String rev =
+                new StringBuilder(s).reverse().toString();
+
+        int n = s.length();
+
+        int[][] dp = new int[n + 1][n + 1];
+
+        // LCS
+        for (int i = 1; i <= n; i++) {
+
+            for (int j = 1; j <= n; j++) {
+
+                if (s.charAt(i - 1) == rev.charAt(j - 1)) {
+
+                    dp[i][j] = 1 + dp[i - 1][j - 1];
+
+                } else {
+
+                    dp[i][j] =
+                            Math.max(dp[i - 1][j],
+                                     dp[i][j - 1]);
+                }
+            }
+        }
+
+        int lps = dp[n][n];
+
+        return n - lps;
+    }
+
+    public static void main(String[] args) {
+
+        String s = "abcda";
+
+        System.out.println(minInsertions(s));
+    }
+}

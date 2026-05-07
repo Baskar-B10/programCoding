@@ -1,0 +1,99 @@
+s = "zoomlazapzo"
+p = "oza"
+
+apzo
+
+logice:
+use silding window techinque
+1. convert the "p" into map of character and its count
+2. take the count 
+3. iterate the string with left and right using right as index
+4. if character matches reduce the count and keep the string length
+5. check string len < min Len if all count =0 
+6. then remove the left character and check the map if its exits then increase count so we can slide window to rest character
+7. loop this until we get checked all so now we have smallest len and start positiom
+8. use that to give the substring 
+
+Initial Map:
+| Character | Count |
+| --------- | ----- |
+| o         | 1     |
+| z         | 1     |
+| a         | 1     |
+count = 3
+left = 0
+
+| Step | right | char | Action | Map Change | count | Window |
+| ---- | ----- | ---- | ------ | ---------- | ----- | ------ |
+| 1    | 0     | z    | needed | z:1→0      | 2     | z      |
+| 2    | 1     | o    | needed | o:1→0      | 1     | zo     |
+| 3    | 2     | o    | extra  | o:0→-1     | 1     | zoo    |
+| 4    | 3     | m    | ignore | -          | 1     | zoom   |
+| 5    | 4     | l    | ignore | -          | 1     | zooml  |
+| 6    | 5     | a    | needed | a:1→0      | 0     | zoomla |
+Shrink Window (count == 0)
+| left | leftChar | Action | Map Change | count | Valid? |
+| ---- | -------- | ------ | ---------- | ----- | ------ |
+| 0    | z        | remove | z:0→1      | 1     | ❌      |
+  
+  Window becomes invalid because:map[z] > 0
+  Meaning:z is missing now
+  Move:left = 1
+Continue Expanding
+| Step | right | char | Action | Map Change | count | Window |
+| ---- | ----- | ---- | ------ | ---------- | ----- | ------ |
+| 7    | 6     | z    | needed | z:1→0      | 0     | oomlaz |
+Shrink Again
+| left | leftChar | Action          | Map Change | count | Window |
+| ---- | -------- | --------------- | ---------- | ----- | ------ |
+| 1    | o        | remove extra o  | o:-1→0     | 0     | omlaz  |
+| 2    | o        | remove needed o | o:0→1      | 1     | mlaz   |
+  At:left = 1
+  Window:"omlaz"
+  Length:5
+  New minimum:minLen = 5
+
+class Solution {
+    public static String minWindow(String s, String p) {
+        // code here
+        Map<Character,Integer> map = new HashMap<>();
+        String result ="";
+        int count=0;
+        for(int i=0; i< p.length();i++){
+            map.put(p.charAt(i),map.getOrDefault(p.charAt(i),0)+1);
+            count++;
+        }
+        int left =0;
+        int minLen = Integer.MAX_VALUE;
+        int start =0;
+        for(int right=0; right<s.length();right++){
+            char c= s.charAt(right);
+            if(map.containsKey(c)){
+              if(map.get(c)>0){
+                  count--;
+              }
+              map.put(c, map.get(c)-1);
+            }
+            
+            while(count==0){
+                if(right-left+1 <minLen){
+                    minLen = right-left+1;
+                    start=left;
+                }
+                
+                char leftChar = s.charAt(left);
+                if(map.containsKey(leftChar)){
+                    map.put(leftChar, map.get(leftChar)+1);
+                
+                    if(map.get(leftChar)>0){
+                        count++;
+                    }
+                }
+                left++;
+            }
+        }
+        result = minLen == Integer.MAX_VALUE ? ""
+        : s.substring(start, start+minLen);
+        return result;
+    }
+}

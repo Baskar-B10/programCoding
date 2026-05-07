@@ -1,0 +1,95 @@
+            1
+         /     \
+        2       3
+      /   \   /   \
+     4     5 6     7
+
+     output:[[4], [2], [1, 5, 6], [3], [7]]
+
+     import java.util.*;
+
+class TreeNode {
+
+    int val;
+    TreeNode left, right;
+
+    TreeNode(int val) {
+        this.val = val;
+    }
+}
+
+logic:
+1.use map to store the col and its results pair
+2. use queue for node element and column and take the element 
+3. if its left ,, do col-1
+4. if its right , do col+1
+
+public class VerticalTraversal {
+
+    public static List<List<Integer>> verticalOrder(TreeNode root) {
+
+        List<List<Integer>> result = new ArrayList<>();
+
+        if (root == null)
+            return result;
+
+        TreeMap<Integer, List<Integer>> map =
+                new TreeMap<>();
+
+        Queue<TreeNode> nodeQueue =
+                new LinkedList<>();
+
+        Queue<Integer> colQueue =
+                new LinkedList<>();
+
+        nodeQueue.offer(root);
+        colQueue.offer(0);
+
+        while (!nodeQueue.isEmpty()) {
+
+            TreeNode node = nodeQueue.poll();
+
+            int col = colQueue.poll();
+
+            map.putIfAbsent(col, new ArrayList<>());
+
+            map.get(col).add(node.val);
+
+            // left child
+            if (node.left != null) {
+
+                nodeQueue.offer(node.left);
+
+                colQueue.offer(col - 1);
+            }
+
+            // right child
+            if (node.right != null) {
+
+                nodeQueue.offer(node.right);
+
+                colQueue.offer(col + 1);
+            }
+        }
+
+        result.addAll(map.values());
+
+        return result;
+    }
+
+    public static void main(String[] args) {
+
+        TreeNode root = new TreeNode(1);
+
+        root.left = new TreeNode(2);
+        root.right = new TreeNode(3);
+
+        root.left.left = new TreeNode(4);
+        root.left.right = new TreeNode(5);
+
+        root.right.left = new TreeNode(6);
+        root.right.right = new TreeNode(7);
+
+        System.out.println(verticalOrder(root));
+    }
+}

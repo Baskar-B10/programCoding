@@ -1,0 +1,58 @@
+
+        int[] gas  = {1,2,3,4,5};
+        int[] cost = {3,4,5,1,2};
+        output : start at 3
+
+  logic:
+  1. iteterate the loop and find gain for each 
+  2. if any negative value , increase the start to next and reset the tank
+  3. if total >=0 then its possible else no
+
+| i | gas | cost | gain | tank  | total | start |
+| - | --- | ---- | ---- | ----- | ----- | ----- |
+| 0 | 1   | 3    | -2   | -2    | -2    | 0     |
+|   |     |      |      | reset |       | 1     |
+| 1 | 2   | 4    | -2   | -2    | -4    | 1     |
+|   |     |      |      | reset |       | 2     |
+| 2 | 3   | 5    | -2   | -2    | -6    | 2     |
+|   |     |      |      | reset |       | 3     |
+| 3 | 4   | 1    | +3   | 3     | -3    | 3     |
+| 4 | 5   | 2    | +3   | 6     | 0     | 3     |
+total = 0
+
+Means:total gas >= total cost
+
+public class GasStation {
+
+    public static int canCompleteCircuit(int[] gas, int[] cost) {
+
+        int total = 0;
+        int tank = 0;
+        int start = 0;
+
+        for (int i = 0; i < gas.length; i++) {
+
+            int gain = gas[i] - cost[i];
+
+            total += gain;
+            tank += gain;
+
+            // cannot continue
+            if (tank < 0) {
+
+                start = i + 1;
+                tank = 0;
+            }
+        }
+
+        return total >= 0 ? start : -1;
+    }
+
+    public static void main(String[] args) {
+
+        int[] gas  = {1,2,3,4,5};
+        int[] cost = {3,4,5,1,2};
+
+        System.out.println(canCompleteCircuit(gas, cost));
+    }
+}

@@ -1,0 +1,73 @@
+1 → 2 → 3 → 2 → 1
+true
+
+Steps
+  Find middle of linked list
+  Reverse second half
+  Compare first half and reversed second half
+  If all equal → palindrome
+🔹 Example
+
+Linked List:1 → 2 → 3 → 2 → 1
+Step 1: Find Middle
+    Using slow & fast pointers: 
+    slow moves 1 step
+    fast moves 2 steps
+    Middle: 3
+Step 2: Reverse Second Half
+  Original: 3 → 2 → 1
+  Reverse:  1 → 2 → 3
+Step 3: Compare
+    Compare:
+        1 == 1
+        2 == 2
+        3 == 3
+    All equal ✅
+
+/*
+class Node {
+    int data;
+    Node next;
+
+    Node(int d) {
+        data = d;
+        next = null;
+    }
+}*/
+
+class Solution {
+    public boolean isPalindrome(Node head) {
+        
+        if(head==null || head.next==null){
+            return true;
+        }
+        // code here
+        Node slow =head;
+        Node fast = head;
+        
+        while (fast!=null && fast.next !=null){
+            slow = slow.next;
+            fast= fast.next.next;
+        }
+        Node temp =null;
+        Node curr= slow;
+        while (curr!=null){
+            Node nextTemp= curr.next;
+            curr.next=temp;
+            
+            temp=curr;
+            curr=nextTemp;
+        }
+        
+        Node first= head;
+        Node second = temp;
+       while (second!=null){
+           if(first.data !=second.data){
+               return false;
+           }
+           first= first.next;
+           second=second.next;
+       }
+        return true;
+    }
+}

@@ -1,0 +1,33 @@
+ String[] strs = {"flower", "flow", "flight"};
+ outputL fl
+
+logic:
+1. take the first element from array as prefix 
+2. itearte each element and reduce the prefix length if prefix not match
+3. until the prefix match reduce the prefix size 
+
+
+
+// User function Template for Java
+class Solution {
+    public String longestCommonPrefix(String arr[]) {
+        // code here
+        if(arr==null || arr.length==0){
+            return "";
+        }
+       String prefix= arr[0];
+       
+       for (int i=1; i<arr.length; i++){
+           while(!arr[i].startsWith(prefix)){
+               
+               prefix= prefix.substring(0,prefix.length()-1);
+               
+               
+               if(prefix.isEmpty()){
+                   return "";
+               }
+           }
+       }
+      return prefix; 
+    }
+}

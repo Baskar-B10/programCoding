@@ -1,0 +1,115 @@
+Rotten Oranges
+0 -> empty
+1 -> fresh orange
+2 -> rotten orange
+
+Rule:
+
+every minute
+rotten orange infects adjacent fresh oranges
+only 4 directions
+
+Find:
+
+minimum time to rot all oranges
+return -1 if impossible
+
+2 1 1
+1 1 0
+0 1 1
+
+Minute 0:
+
+2 1 1
+1 1 0
+0 1 1
+
+Minute 1:
+2 2 1
+2 1 0
+0 1 1
+
+Minute 2:
+2 2 2
+2 2 0
+0 1 1
+Continue until all rot. Answer: 4
+
+logic:
+  1. initize the size to n and m
+  2. initize the queue to collect the rotten oranage row , col and time
+  3. itearte the queue in all 4 direction like row and col (up,down , right and left)
+  4. check if its fresh , mark as rotten and move
+  5. check finally if any fresh avaiable.
+
+import java.util.*;
+
+class Solution {
+
+    public int orangesRotting(int[][] grid) {
+
+        int n = grid.length;
+        int m = grid[0].length;
+
+        Queue<int[]> q = new LinkedList<>();
+
+        int fresh = 0;
+
+        // add all rotten oranges
+        for (int i = 0; i < n; i++) {
+
+            for (int j = 0; j < m; j++) {
+
+                if (grid[i][j] == 2) {
+
+                    q.offer(new int[]{i, j, 0});
+                }
+
+                else if (grid[i][j] == 1) {
+                    fresh++;
+                }
+            }
+        }
+
+        int[] rowDir = {-1, 1, 0, 0};
+        int[] colDir = {0, 0, -1, 1};
+
+        int time = 0;
+
+        while (!q.isEmpty()) {
+
+            int[] cell = q.poll();
+
+            int row = cell[0];
+            int col = cell[1];
+            int t = cell[2];
+
+            time = Math.max(time, t);
+
+            for (int i = 0; i < 4; i++) {
+
+                int newRow = row + rowDir[i];
+                int newCol = col + colDir[i];
+
+                if (newRow >= 0 &&
+                    newCol >= 0 &&
+                    newRow < n &&
+                    newCol < m &&
+                    grid[newRow][newCol] == 1) {
+
+                    grid[newRow][newCol] = 2;
+
+                    fresh--;
+
+                    q.offer(new int[]{
+                        newRow,
+                        newCol,
+                        t + 1
+                    });
+                }
+            }
+        }
+
+        return fresh == 0 ? time : -1;
+    }
+}

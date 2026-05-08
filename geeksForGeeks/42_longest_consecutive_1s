@@ -1,0 +1,31 @@
+
+input: 5
+output : 1 since 101 
+input : 14
+output : 3 since 1110
+logic:
+  1. use maths like num % 2 gives 1 , 0 , if 1 then increase the count else reset the count to 0
+  2. have the loop run till n=1 and reduce the n by dividing n/2
+  3. take long by comaparing the count
+  
+class Solution {
+    public static int maxConsecutiveOnes(int n) {
+        // code here
+      int count =0;
+      int longest=0;
+        while (n>=1){
+            int rem = n%2;
+            
+            if(rem==1){
+                count++;
+            }else{
+                count=0;
+            }
+            
+          longest= Math.max(longest, count) ;
+          n=n/2;
+        }
+      
+        return longest;
+    }
+}

@@ -1,0 +1,39 @@
+["john", "johnny", "jackie", "john", "jackie", "jamie", "jamie", "john", "johnny", "jamie", "johnny", "john"]
+select Lexicographically based on size.
+john 4
+
+logic:
+  use map to have name and count as value
+  itearate the map and find the maximum vote
+    if vote is more select the winner
+    else if vote are same then compare the name size 
+
+// User function Template for Java
+
+class Solution {
+    // Function to return the name of candidate that received maximum votes.
+    public static String[] winner(String arr[], int n) {
+        // add your code
+        HashMap<String,Integer> map = new HashMap<>();
+
+        for(String s: arr){
+            map.put(s, map.getOrDefault(s,0)+1);
+        }
+        int maxVotes =0;
+        String winner="";
+        for(String name : map.keySet()){
+            int votes = map.get(name);
+            if(maxVotes<votes){
+                maxVotes=votes;
+                winner = name;
+            }
+            else if (maxVotes==votes){
+               if(name.compareTo(winner)<0){
+                   winner=name;
+               } 
+            }
+        }
+
+        return new String[] {winner,String.valueOf(maxVotes)};
+    }
+}

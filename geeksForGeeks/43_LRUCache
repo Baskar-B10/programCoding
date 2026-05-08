@@ -1,0 +1,159 @@
+LRU Cache implementation, a Node class is required.Because:
+    HashMap gives fast access to cache items
+    Doubly Linked List maintains usage order
+    Each element in the linked list must store:
+          key
+          value
+          prev pointer
+          next pointer
+
+get(key):
+exists ?
+   yes → move to front
+   no  → return -1
+
+put(key, value)
+
+already exists ?
+   yes → remove old node
+
+insert new node at front
+
+capacity exceeded ?
+   yes → remove tail.prev
+
+remove(node)
+  Suppose we remove B
+  Before: head <-> A <-> B <-> C <-> tail
+  Connections:
+      B.prev = A
+      B.next = C
+Step 1
+  Node prevNode = node.prev;  For B: prevNode = A
+Step 2
+    Node nextNode = node.next;
+    nextNode = C
+Step 3
+    prevNode.next = nextNode;
+    A.next = C 
+    Now: A -----> C
+Step 4
+    nextNode.prev = prevNode;
+    C.prev = A
+
+Final: head <-> A <-> C <-> tail      
+
+insert(node)
+  We always insert near head because: newest/recently used item should become MRU
+  Suppose current list: head <-> A <-> C <-> tail 
+  Insert B 
+    Goal: head <-> B <-> A <-> C <-> tail
+
+Step 1
+  Node nextNode = head.next;
+  nextNode = A
+Step 2
+  head.next = node;
+  head -> B
+Temporary:
+  head -> B
+  A <-> C
+Step 3
+  node.prev = head;
+  B.prev = head
+Step 4
+  node.next = nextNode;
+  B.next = A
+Step 5
+  nextNode.prev = node;
+  A.prev = B
+Final:  head <-> B <-> A <-> C <-> tail
+
+class LRUCache {
+    
+    static class Node{
+        int key;
+        int value;
+        
+        Node prev;
+        Node next;
+        
+        Node(int key, int value){
+            this.key = key;
+            this.value = value;
+        }
+    }
+        static int capacity;
+        static HashMap<Integer, Node> map;
+        
+        static Node head;
+        static Node tail;
+    
+
+    LRUCache(int cap) {
+        // code here
+        capacity =cap;
+        map = new HashMap<>();
+        head= new Node(0,0);
+        tail= new Node(0,0);
+        head.next=tail;
+        tail.prev=head;
+        
+    }
+
+    public static int get(int key) {
+
+        
+        //  code here
+        if(!map.containsKey(key)){
+            return -1;
+        }
+        
+        Node node = map.get(key);
+        remove(node);
+        insert(node);
+        
+        return node.value;
+    }
+
+        
+    public static void put(int key, int value) {
+        //  code here
+        
+        if(map.containsKey(key)){
+            Node oldNode = map.get(key);
+            remove(oldNode);
+            map.remove(key);
+        }
+        
+        Node newNode= new Node(key,value);
+        insert(newNode);
+        map.put(key,newNode);
+        
+        if(map.size()> capacity){
+            Node lru = tail.prev;
+            remove(lru);
+            map.remove(lru.key);
+        }
+    }
+    
+    static void remove(Node node){
+        Node prevNode= node.prev;
+        Node nextNode = node.next;
+        
+        prevNode.next= nextNode;
+        nextNode.prev= prevNode;
+        
+    }
+    
+    static void insert(Node node){
+        Node nextNode= head.next;
+        
+        head.next=node;
+        node.prev=head;
+        
+        node.next=nextNode;
+        nextNode.prev= node;
+        
+    }
+}

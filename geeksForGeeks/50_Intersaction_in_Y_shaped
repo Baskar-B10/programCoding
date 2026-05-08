@@ -1,0 +1,70 @@
+List1: 1 -> 2 -> 3
+                    \
+                     7 -> 8
+                    /
+List2:      4 -> 5
+
+because both lists merge at node 7.
+output:7
+
+Main Logic
+Use 2 pointers:
+  p1 = head1
+  p2 = head2
+
+Move both one step.
+If pointer becomes null:n move it to other list head 
+ Eventually both meet at intersection.
+
+
+| Step | p1   | p2   |
+| ---- | ---- | ---- |
+| 1    | 1    | 4    |
+| 2    | 2    | 5    |
+| 3    | 3    | 7    |
+| 4    | 7    | 8    |
+| 5    | 8    | null |
+| 6    | null | 1    |
+| 7    | 4    | 2    |
+| 8    | 5    | 3    |
+| 9    | 7    | 7    |
+
+Comparison should be: p1 != p2
+NOT: p1.data != p2.data
+intersection means same node address
+not same value
+/*
+class Node {
+    int data;
+    Node next;
+
+    Node(int d) {
+        data = d;
+        next = null;
+    }
+}
+*/
+
+class Solution {
+    public Node intersectPoint(Node head1, Node head2) {
+        // code here
+      Node p1 = head1;
+      Node p2= head2;
+      
+        while (p1!=p2){
+            
+            if(p1==null ){
+               p1=head2;
+            }else{
+               p1=p1.next;
+            }
+            
+            if(p2==null){
+                p2=head1;
+            }else{
+                p2=p2.next;
+            }
+        }
+        return p1;
+    }
+}

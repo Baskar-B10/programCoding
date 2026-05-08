@@ -1,0 +1,46 @@
+
+
+[
+ [0, 5, 10],
+ [100000000, 0, 3],
+ [100000000, 100000000, 0]
+]
+Where: 100000000 = no direct path
+
+output:
+0   5   8
+INF 0   3
+INF INF 0
+
+For every pair: i -> j
+Check whether going through another node gives shorter path: i -> via -> j
+Core Formula : dist[i][j]=min(dist[i][j], dist[i][via]+dist[via][j])
+
+class Solution
+{
+    public void shortest_distance(int[][] matrix)
+    {
+        int n = matrix.length;
+
+        for(int via = 0; via < n; via++)
+        {
+            for(int i = 0; i < n; i++)
+            {
+                for(int j = 0; j < n; j++)
+                {
+
+                    if(matrix[i][via] == 100000000 ||
+                       matrix[via][j] == 100000000)
+                    {
+                        continue;
+                    }
+
+                    matrix[i][j] = Math.min(
+                        matrix[i][j],
+                        matrix[i][via] + matrix[via][j]
+                    );
+                }
+            }
+        }
+    }
+}

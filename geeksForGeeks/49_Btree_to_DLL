@@ -1,0 +1,62 @@
+       10
+      /  \
+     5   20
+    / \    
+   2   8
+
+output
+   2 <-> 5 <-> 8 <-> 10 <-> 20
+
+   left -> root -> right
+
+
+While visiting node:
+connect previous node with current node
+    prev.right = curr
+    curr.left = prev
+| Step | Current Node | prev Before | Connection Made | DLL After Step      | prev After |
+| ---- | ------------ | ----------- | --------------- | ------------------- | ---------- |
+| 1    | 2            | null        | head = 2        | 2                   | 2          |
+| 2    | 5            | 2           | 2 ↔ 5           | 2 ↔ 5               | 5          |
+| 3    | 8            | 5           | 5 ↔ 8           | 2 ↔ 5 ↔ 8           | 8          |
+| 4    | 10           | 8           | 8 ↔ 10          | 2 ↔ 5 ↔ 8 ↔ 10      | 10         |
+| 5    | 20           | 10          | 10 ↔ 20         | 2 ↔ 5 ↔ 8 ↔ 10 ↔ 20 | 20         |
+
+  class Solution {
+
+    Node prev = null;
+    Node head = null;
+
+    Node bToDLL(Node root) {
+
+        inorder(root);
+
+        return head;
+    }
+
+    void inorder(Node root) {
+
+        if (root == null) {
+            return;
+        }
+
+        // left
+        inorder(root.left);
+
+        // current node
+        if (prev == null) {
+
+            head = root;
+        }
+        else {
+
+            prev.right = root;
+            root.left = prev;
+        }
+
+        prev = root;
+
+        // right
+        inorder(root.right);
+    }
+}

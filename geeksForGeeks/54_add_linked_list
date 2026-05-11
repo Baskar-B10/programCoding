@@ -7,6 +7,16 @@ Reverse both lists
 Add normally
 Reverse answer
 
+ 1. iterate using while loop till each list have null and extra quotient is 0 (for last element here its 1)
+  2. add the  element from list 1 and 2 to sum.
+  3. summ will have value then get split the 2 digit
+      18%10 -> 8 -> keep it in current 
+      18/10 -> 1 (qutioent) go for next so eep as "q"
+  4.here first set the remainder value in current.next 
+  5. for next iteration node , make the current.next as current example if iteration of abc , 
+    once a done need to go for c
+    6. need to reverse the input and output to take the LSB first and add and then remove leading zero if any
+
 | Step      | Sum | Digit | Carry |
 | --------- | --- | ----- | ----- |
 | 5 + 5     | 10  | 0     | 1     |

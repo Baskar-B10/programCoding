@@ -1,0 +1,31 @@
+arr= [100,200,300,400] k=2
+
+subarray 1: 100+200 = 300
+2: 200+300 = 500
+3: 300+400=700
+
+700 is maximum output
+
+logic: 
+  1. use dilding window , first calculate the sum of k element 
+  2. iterarte from other kth element and remove first element which we added in array and add next element
+  3. compare max between the result and already having result
+
+class Solution {
+    public int maxSubarraySum(int[] arr, int k) {
+        // Code here
+        int sum=0;
+        int output=0;
+        for(int i=0; i<k ; i++){
+            sum+=arr[i];
+            output+=arr[i];
+        }
+        
+        for(int i=k; i<arr.length;i++){
+            sum = sum - arr[i-k] +arr[i];
+            output= Math.max(sum,output);
+        }
+        
+        return output;
+    }
+}

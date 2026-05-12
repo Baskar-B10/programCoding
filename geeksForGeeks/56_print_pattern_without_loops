@@ -1,0 +1,38 @@
+for -16 output =[-16]
+for 10 output = [10,5,0,5,10]
+
+reduce the element by 5 till n <0 then increase to 5 till the point
+
+Step,Action,List Content
+Call 1,"Add 10, then call solve(5)",[10]
+Call 2,"Add 5, then call solve(0)","[10, 5]"
+Call 3,"Base Case: Add 0, then Return","[10, 5, 0]"
+Return to 2,Add 5 (after recursion),"[10, 5, 0, 5]"
+Return to 1,Add 10 (after recursion),"[10, 5, 0, 5, 10]"
+
+class Solution {
+    public ArrayList<Integer> pattern(int n) {
+        // code here
+        ArrayList<Integer> output = new ArrayList<Integer>();
+     
+
+      generate(n, output);
+      return output;
+       
+    }
+    
+    void generate(int n,ArrayList<Integer> output){
+        
+        if(n<=0){
+            output.add(n);
+            return;
+        }
+        output.add(n);
+        
+        generate(n-5,output);
+        
+        output.add(n);
+        
+       
+    }
+}

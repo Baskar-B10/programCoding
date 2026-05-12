@@ -1,0 +1,111 @@
+This problem is solved using Breadth First Search (BFS) because:
+
+    Each dice throw is one move.
+    We need the minimum number of throws.
+    From every cell, we can go to at most 6 next cells.
+Idea
+    Cells are from 1 to 30.
+    From a cell x, you can move to:
+              x+1
+              x+2
+              ...
+              x+6
+    If a cell has:
+        Ladder → move upward instantly
+        Snake → move downward instantly
+
+We use BFS level by level.
+
+Approach
+    Create a board array of size 31.
+    Store snakes/ladders:
+        board[start] = end
+    Start BFS from cell 1.
+    For every dice value from 1 to 6:
+        Move to next cell.
+        If snake/ladder exists, jump.
+    First time reaching 30 gives minimum throws.
+
+
+import java.util.*;
+
+class Solution {
+
+    static class Pair {
+        int cell;
+        int moves;
+
+        Pair(int cell, int moves) {
+            this.cell = cell;
+            this.moves = moves;
+        }
+    }
+
+    public static int minThrow(int N, int arr[]) {
+
+        int[] board = new int[31];
+
+        // Store snakes and ladders
+        for (int i = 0; i < 2 * N; i += 2) {
+            board[arr[i]] = arr[i + 1];
+        }
+
+        Queue<Pair> q = new LinkedList<>();
+        boolean[] visited = new boolean[31];
+
+        q.offer(new Pair(1, 0));
+        visited[1] = true;
+
+        while (!q.isEmpty()) {
+
+            Pair current = q.poll();
+
+            int cell = current.cell;
+            int moves = current.moves;
+
+            // Reached destination
+            if (cell == 30) {
+                return moves;
+            }
+
+            // Try all dice throws
+            for (int dice = 1; dice <= 6; dice++) {
+
+                int next = cell + dice;
+
+                if (next > 30)
+                    continue;
+
+                // Snake or ladder
+                if (board[next] != 0) {
+                    next = board[next];
+                }
+
+                if (!visited[next]) {
+                    visited[next] = true;
+                    q.offer(new Pair(next, moves + 1));
+                }
+            }
+        }
+
+        return -1;
+    }
+
+    public static void main(String[] args) {
+
+        int N = 8;
+
+        int[] arr = {
+            3, 22,
+            5, 8,
+            11, 26,
+            20, 29,
+            27, 1,
+            21, 9,
+            17, 4,
+            19, 7
+        };
+
+        System.out.println(minThrow(N, arr));
+    }
+}

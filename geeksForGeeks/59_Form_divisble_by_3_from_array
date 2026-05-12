@@ -1,0 +1,20 @@
+arra: 40 50 90 
+we can form 405090 which can be divsible by 3
+output: true;
+
+logic:
+   num % 3 ==0 means divisible by 3;
+   take remeainder from each and add it 
+   if rem sum divisble by 3 or rem sum is 0 then its formation also divisble by zero
+
+class Solution {
+    public boolean isPossible(int[] arr) {
+        // code here
+        int sum=0;
+        for(int num: arr){
+            sum+=num%3;
+        }
+       
+        return sum%3 ==0  || sum==0 ? true : false;
+    }
+}

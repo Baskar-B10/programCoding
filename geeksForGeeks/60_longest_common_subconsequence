@@ -1,0 +1,74 @@
+s1 = "abcde"
+s2 = "ace"
+output: Length = 3
+
+At every cell:
+
+text1[i-1]
+text2[j-1]
+
+Two possibilities.
+
+CASE 1: Characters Match
+Example: c == c
+    Then that character MUST be part of LCS.
+    So: 1 + previous diagonal
+
+Why diagonal?
+    Because:
+      both characters are used
+      move both pointers backward
+    Example: abc and ac
+        At:c == c
+        Before this: ab and a
+        LCS there = 1
+        Now add current matching char: 1 + 1 = 2
+    So: dp[i][j] = 1 + dp[i-1][j-1]
+
+CASE 2: Characters DON'T Match
+    Example:b != c
+    Now we have 2 choices:
+      Choice 1 - Ignore current char from string1.
+              Move upward: dp[i-1][j]
+      Choice 2 - Ignore current char from string2.
+              Move left: dp[i][j-1]
+    Take best: max(top, left)
+
+
+|    | "" | a | c | e |
+| -- | -- | - | - | - |
+| "" | 0  | 0 | 0 | 0 |
+| a  | 0  | 1 | 1 | 1 |
+| b  | 0  | 1 | 1 | 1 |
+| c  | 0  | 1 | 2 | 2 |
+| d  | 0  | 1 | 2 | 2 |
+| e  | 0  | 1 | 2 | 3 |
+
+class Solution {
+
+    public int longestCommonSubsequence(String text1, String text2) {
+
+        int n = text1.length();
+        int m = text2.length();
+
+        int[][] dp = new int[n + 1][m + 1];
+
+        for (int i = 1; i <= n; i++) {
+
+            for (int j = 1; j <= m; j++) {
+
+                if (text1.charAt(i - 1) == text2.charAt(j - 1)) {
+
+                    dp[i][j] = 1 + dp[i - 1][j - 1];
+
+                } else {
+
+                    dp[i][j] = Math.max(dp[i - 1][j],
+                                        dp[i][j - 1]);
+                }
+            }
+        }
+
+        return dp[n][m];
+    }
+}

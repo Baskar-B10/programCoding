@@ -1,0 +1,44 @@
+For the pattern DIID, the output is 21354.
+
+Step-by-Step Execution
+Index 0 ('D'):
+  Push 1 onto the stack.
+  Current stack: [1]
+Index 1 ('I'):
+  Push 2 onto the stack.
+  Since it's an 'I', pop everything from the stack.
+  Result: "21"
+Index 2 ('I'):
+  Push 3 onto the stack.
+  Since it's an 'I', pop everything from the stack.
+  Result: "213"
+Index 3 ('D'):
+  Push 4 onto the stack.
+  Current stack: [4]
+  End of Pattern (Index 4):
+  Push 5 onto the stack.Since we reached the end, pop everything.
+  Result: "21354"
+
+  // User function Template for Java
+import java.util.stream.IntStream;
+class Solution {
+    static String printMinNumberForPattern(String S) {
+        // code here
+        StringBuilder output=new StringBuilder();
+        Stack<Integer> stack = new Stack<>();
+        IntStream.rangeClosed(0,S.length())
+        .forEach(i->{
+            
+            stack.push(i+1);
+            
+            if(i==S.length() || S.charAt(i)=='I'){
+                while(!stack.isEmpty()){
+                    output.append(stack.pop());
+                }
+            }
+        });
+        
+        return output.toString();
+        
+    }
+}

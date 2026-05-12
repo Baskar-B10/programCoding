@@ -1,0 +1,59 @@
+
+| Item | Weight | Profit |
+| ---- | ------ | ------ |
+| A    | 2      | 10     |
+| B    | 3      | 15     |
+| C    | 5      | 25     |
+Capacity: W = 7
+output : 35 (2+5 of 10+25 =35) to get max profit
+
+dp[w] = max(dp[w],
+            value[i] + dp[w - weight[i]])
+take current item
+add best profit from remaining capacity
+            
+| Capacity (w) | Best Choice  | Calculation     | dp[w] |
+| ------------ | ------------ | --------------- | ----- |
+| 0            | none         | 0               | 0     |
+| 1            | none         | no item fits    | 0     |
+| 2            | A            | 10 + dp[0] = 10 | 10    |
+| 3            | B            | 15 + dp[0] = 15 | 15    |
+| 4            | A + A        | 10 + dp[2] = 20 | 20    |
+| 5            | A + B or C   | 10 + dp[3] = 25 | 25    |
+| 6            | A+A+A or B+B | 10 + dp[4] = 30 | 30    |
+| 7            | A+A+B        | 15 + dp[4] = 35 | 35    |
+
+
+class Solution {
+
+    static int unboundedKnapsack(int W, int[] wt, int[] val, int n) {
+
+        int[] dp = new int[W + 1];
+
+        for (int w = 0; w <= W; w++) {
+
+            for (int i = 0; i < n; i++) {
+
+                if (wt[i] <= w) {
+
+                    dp[w] = Math.max(dp[w],
+                                     val[i] + dp[w - wt[i]]);
+                }
+            }
+        }
+
+        return dp[W];
+    }
+
+    public static void main(String[] args) {
+
+        int[] wt = {2, 3, 5};
+        int[] val = {10, 15, 25};
+
+        int W = 7;
+
+        System.out.println(
+            unboundedKnapsack(W, wt, val, wt.length)
+        );
+    }
+}

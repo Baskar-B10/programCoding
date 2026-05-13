@@ -1,0 +1,32 @@
+[3, 1, 4, 6, 5]
+output : true since 3*3 + 4*4 = 5*5 possible pythogrous
+
+logic:
+  1. use set to store the square values for each
+  2. iterate loops 2 times by keep 1 element with us and use other element 
+  3. square of each element and its next element match in set return true
+
+
+
+class Solution {
+    boolean pythagoreanTriplet(int[] arr) {
+        // code here
+       Set<Integer> set = new HashSet<>();
+       for(int num: arr){
+           set.add(num*num);
+       }
+       
+       for (int i=0; i<arr.length; i++){
+           int a = arr[i]*arr[i];
+           for(int j=i+1; j<arr.length; j++){
+               int b = arr[j]*arr[j];
+               
+               int sum =a+b;
+               
+               if(set.contains(sum)) return true;
+           }
+       }
+       
+       return false;
+    }
+}

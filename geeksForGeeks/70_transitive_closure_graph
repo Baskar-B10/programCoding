@@ -1,0 +1,71 @@
+graph =
+0 1 0
+0 0 1
+0 0 0
+
+output =
+1 1 0
+0 1 1
+0 0 1
+
+If: i → k and k → j then: i → j
+0 → 1 → 2
+|   | 0 | 1 | 2 |
+| - | - | - | - |
+| 0 | 0 | 1 | 0 |
+| 1 | 0 | 0 | 1 |
+| 2 | 0 | 0 | 0 |
+
+Transitive Closure
+0 can reach 2 through 1
+|   | 0 | 1 | 2 |
+| - | - | - | - |
+| 0 | 1 | 1 | 1 |
+| 1 | 0 | 1 | 1 |
+| 2 | 0 | 0 | 1 |
+
+Formula
+
+TC[i][j]=TC[i][j]∨(TC[i][k]∧TC[k][j])
+
+
+// User function Template for Java
+
+class Solution {
+    static ArrayList<ArrayList<Integer>> transitiveClosure(int N, int graph[][]) {
+        // code here
+        int [][] tc= new int[N][N];
+        
+        for(int i=0; i< N; i++){
+            for(int j=0; j<N; j++){
+                tc[i][j]=graph[i][j];
+                
+                if(i==j){
+                    tc[i][j]=1;
+                }
+            }
+        }
+        
+        for(int k=0;k < N ; k++){
+            for(int i=0; i<N; i++){
+                for(int j=0; j<N; j++){
+                    if(tc[i][k]==1 && tc[k][j]==1){
+                        tc[i][j]=1;
+                    }
+                }
+            }
+        }
+        
+        ArrayList<ArrayList<Integer>> result = new ArrayList<>();
+        
+        for(int i=0; i<N; i++){
+            ArrayList<Integer> r = new ArrayList<>();
+            for(int j=0; j<N;j++){
+                r.add(tc[i][j]);
+            }
+            result.add(r);
+        }
+        
+        return result;
+    }
+}

@@ -1,0 +1,28 @@
+sorted array have 0 and 1 in the array , 
+  if no zero return 0
+  if no 1 return -1
+   if both exist then  return index of 1 position.
+
+[0,0,0,1,1] -> 3
+[0,0,0,0] -> -1
+[1,1,11]-> 0;
+
+logic:
+check array of 0 == 0 since 0 should come first else return 0;
+iterate using int stream with range and find the index by filter the using match
+else return -1
+
+import java.util.*;
+import java.util.stream.IntStream;
+class Solution {
+    int transitionPoint(int arr[]) {
+        // code here
+        int output=0;
+        if(arr[0]==0){ 
+            output= IntStream.range(0,arr.length)
+        .filter( i-> arr[i]==1).findFirst().orElse(-1);
+        }
+        
+        return output;
+    }
+}

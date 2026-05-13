@@ -1,0 +1,40 @@
+[5,5,10,100,10,5]
+output: 110
+
+At index i:
+
+dp[i]=max(dp[i−1], arr[i]+dp[i−2])
+
+| i | arr[i] | Include   | Exclude | dp[i] |
+| - | ------ | --------- | ------- | ----- |
+| 0 | 5      | 5         | -       | 5     |
+| 1 | 5      | 5         | 5       | 5     |
+| 2 | 10     | 10+5=15   | 5       | 15    |
+| 3 | 100    | 100+5=105 | 15      | 105   |
+| 4 | 10     | 10+15=25  | 105     | 105   |
+| 5 | 5      | 5+105=110 | 105     | 110   |
+
+logic:
+use Dp to store the max element at index
+calculate max element by either previous element or (current + previous of previous eleement max)
+
+// User function Template for Java
+
+class Solution {
+    int findMaxSum(int arr[]) {
+        // code here
+        int n=arr.length;
+        if(n==0) return 0;
+        if(n==1) return arr[0];
+        
+        int[] dp = new int[n];
+        dp[0]= arr[0];
+        dp[1]= Math.max(arr[0],arr[1]);
+        
+        for(int i=2; i<n;i++){
+            dp[i]= Math.max(dp[i-1], arr[i]+dp[i-2]);
+        }
+        
+        return dp[n-1];
+    }
+}

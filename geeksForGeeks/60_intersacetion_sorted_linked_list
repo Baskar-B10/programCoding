@@ -1,0 +1,56 @@
+Linked List 1: 1 → 2 → 3 → 4 → 6
+Linked List 2: 2 → 4 → 6 → 8
+Intersection: 2 → 4 → 6
+
+logic:
+| Condition        | Action              |
+| ---------------- | ------------------- |
+| a.data == b.data | add node, move both |
+| a.data < b.data  | move a              |
+| a.data > b.data  | move b              |
+
+
+| Node A | Node B | Action | Result |
+| ------ | ------ | ------ | ------ |
+| 1      | 2      | move A |        |
+| 2      | 2      | add    | 2      |
+| 3      | 4      | move A | 2      |
+| 4      | 4      | add    | 2 4    |
+| 6      | 6      | add    | 2 4 6  |
+
+
+/* Node of a linked list
+ class Node {
+   int data;
+    Node next;
+    Node(int d)  { data = d;  next = null; }
+}
+*/
+
+class Solution {
+    public static Node findIntersection(Node head1, Node head2) {
+        // code here.
+        
+        Node result = new Node(-1);
+        Node tail = result;
+
+        while(head1!=null && head2!=null)
+        {
+
+            if(head1.data==head2.data){
+                tail.next=new Node(head1.data);
+                tail= tail.next;
+                
+                head1= head1.next;
+                head2=head2.next;
+            }
+           else if(head1.data>head2.data){
+                head2=head2.next;
+            }
+            else if (head2.data>head1.data){
+                head1=head1.next;
+            }
+        }
+        return result.next;
+    }
+}

@@ -1,0 +1,31 @@
+given [a1, a2, a3, ..., an/2, b1, b2, b3, ..., bn/2]
+convert into [a1, b1, a2, b2, a3, b3, ...]
+input : [1,2,3,4,5,6]
+a = [1,2,3]
+b = [4,5,6]
+output: [1,4,2,5,3,6]
+
+logic:
+1. find the mid 
+2. craete the index and new array 
+3. iterate till mid and add element in the position and mid+position in new array
+4. itearte the new array and add it in given array
+
+// User function Template for Java
+
+class Solution {
+    void shuffleArray(long arr[], int n) {
+        // Your code goes here
+        int mid=n/2;
+        long[] r= new long[n];
+        int index=0;
+        for(int i=0; i<mid; i++){
+            r[index++]=arr[i];
+            r[index++]=arr[mid+i];
+        }
+        
+        for(int i=0; i<n;i++){
+            arr[i]=r[i];
+        }
+    }
+}

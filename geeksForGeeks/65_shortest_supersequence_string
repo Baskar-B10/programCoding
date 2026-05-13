@@ -1,0 +1,33 @@
+S1 = "abc"
+S2 = "acd"
+output: abcd
+
+logic:
+1. find the LCS using DP
+2. then add both string length and subtract with lcs value length
+
+S1 = "AGGTAB"  (6)
+S2 = "GXTXAYB" (7)
+LCS: GTAB Length = 4
+So: SCS=m+n−LCS=6+7−4=9
+
+class Solution {
+    public static int minSuperSeq(String s1, String s2) {
+        // code here
+        int n= s1.length();
+        int m= s2.length();
+        int[][] dp = new int[n+1][m+1];
+        for(int i=1; i<=n; i++){
+            for(int j=1; j<=m ; j++){
+                
+                if(s1.charAt(i-1)== s2.charAt(j-1)){
+                    dp[i][j]=1+dp[i-1][j-1];
+                }else{
+                    dp[i][j]= Math.max(dp[i-1][j],dp[i][j-1]);
+                }
+            }
+        }
+        
+        return n+m-dp[n][m];
+    }
+}

@@ -1,0 +1,44 @@
+L = 10
+R = 25
+X = 2
+
+10 11 12 13 14 15 16 17 18 19
+20 21 22 23 24 25
+
+| Number | Count |
+| ------ | ----- |
+| 12     | 1     |
+| 20     | 1     |
+| 21     | 1     |
+| 22     | 2     |
+| 23     | 1     |
+| 24     | 1     |
+| 25     | 1     |
+
+logic:
+Traverse from L to R
+Count digit X in every number
+
+// User function Template for Java
+
+class Solution {
+    int countX(int L, int R, int X) {
+        // code here
+        int count=0;
+        for(int i=L+1; i<R; i++){
+            int num =i;
+            
+            if(X==0 && num==0) {
+                count++;}
+            
+            while (num>0){
+
+                if(num%10==X) {
+                    count++;
+                }
+                num = num/10;
+            }
+        }
+        return count;
+    }
+};

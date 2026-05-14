@@ -1,0 +1,136 @@
+Find Eventual Safe States
+
+Given a directed graph, return all nodes that are safe.
+A node is called safe if:
+    Starting from that node,
+    every possible path eventually ends
+    at a terminal node.
+
+A terminal node means: Node with no outgoing edges
+Example
+
+Edges:
+    {0,1}
+    {1,2}
+    {2,3}
+    {3,1}
+    {4,5}
+
+Graph:
+    0 → 1
+    1 → 2
+    2 → 3
+    3 → 1
+    4 → 5
+    5
+    6
+
+Step 1: Find Cycle
+  Look carefully: 1 → 2 → 3 → 1
+  This is a cycle.
+  So:
+    1 unsafe
+    2 unsafe
+    3 unsafe
+    
+Step 2: Node reaching cycle also unsafe
+  0 → 1
+  Since 1 enters cycle,
+  0 can also loop forever.
+
+So: 0 unsafe
+
+ Step 3: Safe Nodes
+    4 → 5
+    5 is terminal.
+
+Every path from 4 ends safely.
+So:
+  4 safe
+  5 safe
+Node 6 has no edges.
+So:6 safe
+Final answer:[4,5,6]
+
+Main Logic
+
+We use:
+
+DFS + Cycle Detection
+Idea:
+  If a node can reach a cycle,
+  it is unsafe.
+  Else safe.
+
+Arrays Used
+1. vis[]
+  Already visited node
+  Avoid repeated DFS.
+
+2. pathVis[]
+    Node currently in DFS path
+    Used to detect cycle.
+
+3. safe[]
+Stores whether node is safe
+
+class Solution {
+    public ArrayList<Integer> safeNodes(int V, int[][] edges) {
+        // Code here
+        
+        List<List<Integer>> graph=  new ArrayList<>();
+        for(int i=0; i<V; i++){
+            graph.add(new ArrayList<>());
+        }
+        
+        for(int[] e: edges){
+            int u=e[0];
+            int v=e[1];
+            graph.get(u).add(v);
+        }
+        boolean[] vis = new boolean[V];
+        boolean[] pathVis= new boolean[V];
+        boolean[] safe = new boolean[V];
+        
+        for(int i=0; i< V; i++){
+            
+            if(!vis[i]){
+                dfs(i, graph, vis,pathVis,safe);
+            }
+        }
+        
+        ArrayList<Integer> ans = new ArrayList<>();
+        
+        for(int i=0; i<V; i++){
+            
+            if(safe[i]){
+                ans.add(i);
+            }
+        }
+        
+        return ans;
+    }
+    
+    static boolean dfs (int i, List<List<Integer>> graph, boolean[] vis,
+            boolean[] pathVis, boolean[] safe){
+                vis[i]=true;
+                pathVis[i]=true;
+                
+                for(int nei: graph.get(i)){
+                    
+                    if(!vis[nei]){
+                        if(dfs(nei,graph,vis,pathVis,safe)){
+                            return true;
+                        }
+                    }
+                    else if(pathVis[nei]){
+                        return true;
+                        
+                    }
+                }
+                pathVis[i] =false;
+                safe[i]=true;
+                return false;
+                
+            }
+}

@@ -1,0 +1,27 @@
+if xor == 0 -> Player 1
+else if n is even -> Player 1
+else -> Player 2
+
+nput:
+0 18 18 16 16 10 16 6 9
+n=9
+
+XOR= 21
+n  is odd so player2 wins
+
+
+// User function Template for Java
+
+class Solution {
+    static int findWinner(int n, int A[]) {
+        // code here
+        
+
+       int xor =Arrays.stream(A).reduce(0, (a,b) -> a^b);
+       
+      if(xor==0 || n%2==0) return 1;
+      
+ 
+      return 2;
+    }
+}

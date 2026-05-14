@@ -1,0 +1,76 @@
+Determinant of Matrix
+
+The determinant is a special value calculated from a square matrix.
+Only square matrices have determinants.
+
+1 × 1 Matrix
+  Matrix: [A]
+  Determinant: det(A)=A
+  
+2 × 2 Matrix
+    Matrix:
+    [a b
+     c d]
+    Determinant: det(A)=ad−bc
+
+3 × 3 Matrix
+
+Matrix:
+a b c
+d e f
+g h i
+
+Formula: a(ei−fh)−b(di−fg)+c(dh−eg)
+
+Example
+1 2 3
+4 5 6
+7 8 9
+
+Calculation:
+
+1(5×9−6×8)−2(4×9−6×7)+3(4×8−5×7)
+=1(−3)−2(−6)+3(−3)
+=−3+12−9=0
+
+Determinant:
+class Solution {
+    // Function for finding determinant of matrix.
+    static int determinantOfMatrix(int matrix[][], int n) {
+        // code here
+        if(n==1){
+            return matrix[0][0];
+        }
+        int det=0;
+        int sign =1;
+        
+        int[][] temp = new int[n][n];
+        
+        for(int col=0; col<n; col++){
+            getCofactor(matrix,temp,0,col,n);
+            
+            det+= sign * matrix[0][col] * determinantOfMatrix(temp,n-1);
+            sign= -sign;
+        }
+        return det;
+        
+    }
+    static void getCofactor(int[][] mat, int[][] temp, int p, int q, int n ){
+        int row=0;
+        int col=0;
+        
+        for(int i=0; i<n ;i++){
+            for(int j=0; j<n; j++){
+                
+                if(i!=p && j!=q){
+                    temp[row][col++]= mat[i][j];
+                    
+                    if(col==n-1){
+                        col=0;
+                        row++;
+                    }
+                }
+            }
+        }
+    }
+}

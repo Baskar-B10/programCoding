@@ -1,0 +1,72 @@
+To solve the cycle detection problem for an undirected graph using Disjoint Set Union (DSU),
+also known as the Union-Find algorithm,
+we process each edge and check if the two endpoints already belong to the same set.
+
+Initialize: Each node is its own representative (0, 1, 2, 3, 4).
+Edge (1, 3): Union(1, 3). Sets share a root.
+Edge (3, 0): Union(3, 0). Now {1, 3, 0} are in one set.
+Edge (0, 2): Union(0, 2). Now {1, 3, 0, 2} are in one set.
+Edge (2, 4): Union(2, 4). All nodes {1, 3, 0, 2, 4} are in one set.
+Edge (0, 4): We call find(0) and find(4). Both return the same root representative.
+
+Conclusion: Since they share a root, adding the edge (0, 4) creates a cycle. 
+
+
+class Solution {
+    static class DSU{
+        int[] parent;
+
+        
+        DSU(int n){
+            parent = new int[n];
+            for(int i=0; i<n ;i++){
+                parent[i]=i;
+            }
+        }
+        
+        int find(int x){
+            
+            if(parent[x]==x) return x;
+               
+            
+          
+          return parent[x] = find(parent[x]);  
+        }
+        
+        boolean union (int i, int j){
+            
+            int pi=find(i);
+            int pj=find(j);
+            
+            if(pi==pj){
+                return false;
+            }
+            
+            parent[pi]=pj;
+           return true; 
+        }
+        
+    }
+    public boolean detectCycle(int V, ArrayList<ArrayList<Integer>> adj) {
+        // code here
+        DSU dsu= new DSU(V);
+        Set<String> processed= new HashSet<>();
+        for (int u=0; u<V; u++){
+            
+            
+        for(int v: adj.get(u)){
+            int first = Math.min(u,v);
+            int second = Math.max(u,v);
+            
+            String key= first+"-"+second;
+            if(!processed.contains(key)){
+                processed.add(key);
+            if(!dsu.union(u,v)){
+                return true;
+            }
+            }
+        }
+        }
+        return false;
+    }
+}

@@ -1,0 +1,66 @@
+arr1 = [1, 4, 5, 7]
+arr2 = [10, 20, 30, 40]
+x = 32
+
+Since both arrays are sorted:
+
+Start:
+  left = 0 in first array
+  right = m-1 in second array
+
+Logic
+Compute current sum
+Update best pair if closer
+If sum > x → decrease right
+Else → increase left
+
+| Pair | Sum | Difference |
+| ---- | --- | ---------- |
+| 1,30 | 31  | 1          |
+| 1,40 | 41  | 9          |
+| 4,30 | 34  | 2          |
+| 5,30 | 35  | 3          |
+| 7,20 | 27  | 5          |
+
+
+class Solution {
+    public static ArrayList<Integer> findClosestPair(int arr1[], int arr2[], int x) {
+        // code here
+        int left =0;
+        int right = arr2.length-1;
+        
+        int first=0;
+        int second=0;
+        
+        ArrayList<Integer> output= new ArrayList<Integer> ();
+        
+        int minDiff= Integer.MAX_VALUE;
+        
+        while (left<arr1.length && right >=0){
+            
+            int sum= arr1[left]+arr2[right];
+            
+            int diff= Math.abs(x-sum);
+            
+            if(diff<minDiff){
+                minDiff=diff;
+                
+                first=arr1[left];
+                second=arr2[right];
+            }
+            
+            if(sum>x){
+                right--;
+            }else{
+                left++;
+            }
+            
+            
+        }
+        
+        output.add(first);
+        output.add(second);
+        
+        return output;
+    }
+}

@@ -1,0 +1,48 @@
+Lucky Number
+
+A Lucky Number is generated using a special elimination process.
+
+Process
+Start with natural numbers:1 2 3 4 5 6 7 8 9 10 11 12 ...
+
+Step 1 - Remove every 2nd number.
+Remaining:1 3 5 7 9 11 13 15 ...
+
+Step 2- Second remaining number is 3.
+Remove every 3rd number.
+Remaining:1 3 7 9 13 15 21 ...
+
+Step 3
+Next remaining number is 7.
+Remove every 7th number.
+Continue...
+
+At each step:
+
+if n % counter == 0 → eliminated
+else → position changes
+
+New position: n = n - (n/counter);
+
+class Solution {
+    
+ 
+    public static boolean isLucky(int n) {
+        // code here
+        return isLucky(n , 2 );
+    }
+    
+    static boolean isLucky (int n , int counter){
+        
+        if(counter >n ){
+            return true;
+        }
+        if(n % counter ==0){
+            return false;
+        }
+        
+        n = n - (n/counter);
+        counter= counter+1;
+        return isLucky(n, counter);
+    }
+}

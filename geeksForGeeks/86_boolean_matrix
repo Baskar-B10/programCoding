@@ -1,0 +1,44 @@
+1 0 0
+0 0 1
+0 0 0
+
+if element of i j =1 then all ith element and jth element should be 1
+1 xist at (0,0) and (1,2) so all the 0th and 1st row will be 1 and 0th and 2nd col will be 1
+
+1 1 1
+1 1 1
+1 0 1
+
+logic:
+  1. iterate and collect the row and col and put 1 if any row and col have 1
+  2. again iterate and check the corresponding row or col array have 1 then put as 1
+
+class Solution {
+    void booleanMatrix(int mat[][]) {
+        
+        int row =mat.length;
+        int col = mat[0].length;
+        int[] rows = new int[row];
+        int[] cols = new int [col];
+        
+        for(int i=0; i<row; i++){
+            for(int j=0; j<col; j++){
+               if(mat[i][j]==1){
+                   rows[i]=1;
+                   cols[j]=1;
+               } 
+            }
+        }
+        // code here
+        for(int i=0; i<row; i++){
+            for(int j=0; j<col; j++){
+                
+                if(rows[i]==1 || cols[j]==1){
+                    mat[i][j]=1;
+                }
+                
+            }
+        }
+        
+    }
+}

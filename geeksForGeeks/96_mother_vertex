@@ -1,0 +1,90 @@
+Mother Vertex in Graph
+
+In Graph Theory, a Mother Vertex is:
+A vertex from which all other vertices in the graph are reachable.
+
+Applicable for: Directed Graph
+
+0 → 1 → 2
+↓
+3
+
+From 0:
+can reach 1
+can reach 2
+can reach 3
+
+So: 0 is Mother Vertex
+
+5 → 6 → 0 → 1 → 3
+     ↓    ↓
+     4    2
+     ↓
+     1
+     
+Step 1 → DFS Traversal
+| Start DFS From | Visited Nodes           | Candidate |
+| -------------- | ----------------------- | --------- |
+| 0              | 0,1,2,3                 | 0         |
+| 4              | already reachable later | 0         |
+| 5              | 5,6,4,0,1,2,3           | 5         |
+Last finished DFS root: candidate = 5
+
+Step 2 → Verify Candidate
+
+Run DFS from:5
+Visited: 5,6,4,0,1,2,3
+
+Mother Vertex = 5
+
+All visited.
+class Solution {
+    public int findMotherVertex(int V, int[][] edges) {
+        // code here
+        ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
+        
+        for (int i=0; i<V; i++){
+            adj.add(new ArrayList<>());
+        }
+        
+        for(int[] e: edges){
+            int u = e[0];
+            int v= e[1];
+            
+            adj.get(u).add(v);
+        }
+        boolean[] visited = new boolean[V];
+        int candidate = -1;
+        
+        for(int i =0; i<V; i++){
+            
+            if(!visited[i]){
+                dfs(i,adj,visited);
+                candidate=i;
+            }
+        }
+        
+        Arrays.fill(visited,false);
+        dfs(candidate, adj,visited);
+        
+        for(boolean  vis : visited){
+            if(!vis){
+                return-1;
+            }
+        }
+        
+        return candidate;
+        
+    }
+    
+    static void dfs(int node, 
+    ArrayList<ArrayList<Integer>> adj, boolean[] visited){
+        visited[node]=true;
+        
+        for(int nei: adj.get(node)){
+            if(!visited[nei]){
+                dfs(nei,adj,visited);
+            }
+        }
+    }
+}

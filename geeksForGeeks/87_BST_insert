@@ -1,0 +1,49 @@
+In a Data Structures and Algorithms Binary Search Tree (BST):
+
+Left child → smaller value
+Right child → greater value
+
+For inserting a value x:
+
+If x < root.data
+  → go left
+  Else
+  → go right
+
+Repeat until null position found.
+
+       50
+      /  \
+    30    70
+   / \   / \
+ 20 40 60 80
+
+/*
+Definition for Node
+class Node {
+    int data;
+    Node left, right;
+
+    Node(int val) {
+        data = val;
+        left = right = null;
+    }
+}
+*/
+
+class Solution {
+    public Node insert(Node root, int key) {
+        // code here
+        if(root==null){
+            return new Node(key);
+        }
+        if(key < root.data){
+            root.left= insert(root.left,key);
+        }
+       else {
+            root.right= insert(root.right,key);
+        }
+        
+        return root;
+    }
+}

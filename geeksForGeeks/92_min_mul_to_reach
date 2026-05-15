@@ -1,0 +1,86 @@
+minsteps (start and end and array ) mulitiple any element with start and modulus 1000 and reach the end with min steps
+
+In one step: newValue=(current×arr[i])mod1000
+Find minimum steps to reach end.
+
+start = 3
+end = 30
+
+arr = [2,5,7]
+
+3 * 2 = 6
+6 * 5 = 30
+
+output: 2
+
+Every number is always:0→999because of modulus 1000.
+So think of:
+each number as node
+multiplication as edge
+
+Use: BFS because every step has equal weight = 1.
+
+Initial
+Queue:[3]
+dist[3] = 0
+
+Iteration 1
+
+Pop:3
+| Multiply  | Result |
+| --------- | ------ |
+| 3×2 %1000 | 6      |
+| 3×5 %1000 | 15     |
+| 3×7 %1000 | 21     |
+
+queue = [6,15,21]
+
+| Node | Dist |
+| ---- | ---- |
+| 6    | 1    |
+| 15   | 1    |
+| 21   | 1    |
+
+Iteration 2
+
+Pop: 6
+| Multiply | Result |
+| -------- | ------ |
+| 6×2      | 12     |
+| 6×5      | 30     |
+| 6×7      | 42     |
+
+found :30
+dist =2
+
+class Solution {
+    public int minSteps(int[] arr, int start, int end) {
+        // code here
+        Queue<Integer> q = new LinkedList<>();
+        
+        int[] dist = new int[1000];
+        
+        Arrays.fill(dist,Integer.MAX_VALUE);
+        
+        q.offer(start);
+        dist[start]=0;
+        
+        while(!q.isEmpty()){
+            int curr = q.poll();
+            
+            if(curr==end){
+                return dist[curr];
+            }
+            
+            for(int n: arr){
+                int next = (curr * n) %1000;
+                
+                if(dist[curr]+1 < dist[next]){
+                    dist[next]= dist[curr]+1;
+                    q.offer(next);
+                }
+            }
+        }
+        return -1;
+    }
+}

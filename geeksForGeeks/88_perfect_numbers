@@ -1,0 +1,42 @@
+sum of proper divisors=number itself
+Proper divisors means: divisors excluding the number itself.
+Proper divisors: 1, 2, 3
+1+2+3=6
+Perfect squares have one divisor repeated:square root of n
+
+| i | i*i <= 28 | 28 % i == 0 | Add i | n/i | i != n/i | Add n/i | Sum |
+| - | --------- | ----------- | ----- | --- | -------- | ------- | --- |
+| 2 | Yes       | Yes         | +2    | 14  | Yes      | +14     | 17  |
+| 3 | Yes       | No          | —     | —   | —        | —       | 17  |
+| 4 | Yes       | Yes         | +4    | 7   | Yes      | +7      | 28  |
+| 5 | Yes       | No          | —     | —   | —        | —       | 28  |
+
+| i | 36 % i == 0 | Add i | n/i | i != n/i | Add n/i   | Sum |
+| - | ----------- | ----- | --- | -------- | --------- | --- |
+| 2 | Yes         | +2    | 18  | Yes      | +18       | 21  |
+| 3 | Yes         | +3    | 12  | Yes      | +12       | 36  |
+| 4 | Yes         | +4    | 9   | Yes      | +9        | 49  |
+| 5 | No          | —     | —   | —        | —         | 49  |
+| 6 | Yes         | +6    | 6   | No       | NOT added | 55  |
+
+
+class Solution {
+    static boolean isPerfect(int n) {
+        // code here
+        if(n==1) return false;
+
+        int sum=1;
+       for(int i=2; i*i <=n ; i++){
+            if(n%i==0){
+                sum+=i;
+                if(i!=n/i){
+                    sum+=n/i;
+                }
+            }
+           
+        }
+        
+        return (sum==n)? true : false;
+    }
+};
+	​

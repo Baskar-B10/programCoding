@@ -1,0 +1,144 @@
+Perfect Sum Problem
+This is a classic Dynamic Programming problem.
+
+Problem
+
+Given:
+an array arr[]
+a target sum K
+
+Find: number of subsets whose sum = K
+
+arr = [2,3,5,6,8,10]
+sum = 10
+
+[2,3,5]
+[2,8]
+[10]
+
+output: 3
+
+If current element can be taken: dp[i][j]=dp[i−1][j]+dp[i−1][j−arr[i−1]]
+
+| Choice   | Meaning               |
+| -------- | --------------------- |
+| Not take | `dp[i-1][j]`          |
+| Take     | `dp[i-1][j-arr[i-1]]` |
+
+
+Initial State
+
+No elements used.
+Only sum 0 possible using empty subset.
+
+| i/j        | 0 | 1 | 2 | 3 | 4 | 5 |
+| ---------- | - | - | - | - | - | - |
+| 0 elements | 1 | 0 | 0 | 0 | 0 | 0 |
+
+Step 1 → Use Element 2
+Current element:2
+Updates
+| Sum j | Not Take | Take       | Result |
+| ----- | -------- | ---------- | ------ |
+| 0     | 1        | —          | 1      |
+| 1     | 0        | No         | 0      |
+| 2     | 0        | dp[0][0]=1 | 1      |
+| 3     | 0        | dp[0][1]=0 | 0      |
+| 4     | 0        | dp[0][2]=0 | 0      |
+| 5     | 0        | dp[0][3]=0 | 0      |
+
+DP Table
+| i/j       | 0 | 1 | 2 | 3 | 4 | 5 |
+| --------- | - | - | - | - | - | - |
+| Using [2] | 1 | 0 | 1 | 0 | 0 | 0 |
+
+Possible subset: [2]
+
+Step 2 → Use Element 3
+
+Current element:3
+Updates
+Sum j	Not Take	Take	Result
+| Sum j | Not Take | Take       | Result |
+| ----- | -------- | ---------- | ------ |
+| 0     | 1        | —          | 1      |
+| 1     | 0        | No         | 0      |
+| 2     | 1        | No         | 1      |
+| 3     | 0        | dp[1][0]=1 | 1      |
+| 4     | 0        | dp[1][1]=0 | 0      |
+| 5     | 0        | dp[1][2]=1 | 1      |
+
+DP Table
+| i/j         | 0 | 1 | 2 | 3 | 4 | 5 |
+| ----------- | - | - | - | - | - | - |
+| Using [2,3] | 1 | 0 | 1 | 1 | 0 | 1 |
+
+Possible subsets:
+
+Sum	Subset
+| Sum | Subset |
+| --- | ------ |
+| 2   | [2]    |
+| 3   | [3]    |
+| 5   | [2,3]  |
+
+Step 3 → Use Element 5
+
+Current element:
+
+5
+Updates
+| Sum j | Not Take | Take       | Result |
+| ----- | -------- | ---------- | ------ |
+| 0     | 1        | —          | 1      |
+| 1     | 0        | No         | 0      |
+| 2     | 1        | No         | 1      |
+| 3     | 1        | No         | 1      |
+| 4     | 0        | No         | 0      |
+| 5     | 1        | dp[2][0]=1 | 2      |
+
+Final DP Table
+| i/j           | 0 | 1 | 2 | 3 | 4 | 5 |
+| ------------- | - | - | - | - | - | - |
+| Using [2,3,5] | 1 | 0 | 1 | 1 | 0 | 2 |
+
+Final Answer
+dp[3][5]=2
+
+Subsets:
+
+Subset
+[2,3]
+[5]
+Final Summary
+Element Used	New Possible Sums
+2	2
+3	3,5
+5	5 again
+
+class Solution {
+    // Function to calculate the number of subsets with a given sum
+    public int perfectSum(int[] nums, int target) {
+        // code here
+        int n = nums.length;
+        int[][] dp = new int [n+1][target+1];
+        
+        for(int i=0; i<n ;i++){
+            dp[i][0]=1;
+        }
+        
+        for(int i=1; i<=n; i++){
+            for(int j=0; j<=target ; j++){
+                dp[i][j]=dp[i-1][j];
+                
+                if(nums[i-1] <= j){
+                    
+                    dp[i][j] += dp[i-1][j-nums[i-1]];
+                    
+                }
+            }
+        }
+        
+        return dp[n][target];
+    }
+}

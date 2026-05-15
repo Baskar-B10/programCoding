@@ -1,0 +1,123 @@
+To find the number of possible substrings with exactly k distinct characters, we usually use the formula:
+ExactlyK(k)=AtMostK(k)−AtMostK(k−1)
+This is solved efficiently using the sliding window technique.
+
+
+s = "pqpqs"
+k = 2
+
+pq
+pqp
+pqpq
+qp
+qpq
+pq
+pqs
+qs
+
+output= 8;
+For every index right:
+  Expand window
+  Maintain at most k distinct chars
+  If distinct chars exceed k, shrink from left
+  Every window contributes:
+  (right−left+1)substrings.
+
+Variables
+left → window start
+right → window end
+map → frequency of chars
+count += (right - left + 1)
+
+| Iteration | right | char | Window | Map           | Distinct | Substrings Added | Total Count |
+| --------- | ----- | ---- | ------ | ------------- | -------- | ---------------- | ----------- |
+| 1         | 0     | p    | p      | {p=1}         | 1        | 1                | 1           |
+| 2         | 1     | q    | pq     | {p=1,q=1}     | 2        | 2                | 3           |
+| 3         | 2     | p    | pqp    | {p=2,q=1}     | 2        | 3                | 6           |
+| 4         | 3     | q    | pqpq   | {p=2,q=2}     | 2        | 4                | 10          |
+| 5         | 4     | s    | pqpqs  | {p=2,q=2,s=1} | 3        | INVALID          | 10          |
+
+Shrinking Phase
+
+Remove from left: Remove p
+Window:qpqs
+Map:{p=1,q=2,s=1}
+Still 3 distinct.
+
+Remove q
+Window:pqs
+Map:{p=1,q=1,s=1}
+Still 3 distinct.
+
+Remove p
+Window:qs
+Map:{q=1,s=1}
+Now valid.
+
+| Iteration | right | char | Final Window | Map       | Distinct | Added | Total |
+| --------- | ----- | ---- | ------------ | --------- | -------- | ----- | ----- |
+| 5         | 4     | s    | qs           | {q=1,s=1} | 2        | 2     | 12    |
+
+At Most 1 Distinct Character
+Dry Run Table → AtMostK(1)
+| Iteration | right | char | Window | Map       | Distinct | Added   | Total |
+| --------- | ----- | ---- | ------ | --------- | -------- | ------- | ----- |
+| 1         | 0     | p    | p      | {p=1}     | 1        | 1       | 1     |
+| 2         | 1     | q    | pq     | {p=1,q=1} | 2        | INVALID | 1     |
+
+Shrink:
+Remove p
+Window:q
+Add:1
+Total = 2
+
+| Iteration | right | char | Window         | Total |
+| --------- | ----- | ---- | -------------- | ----- |
+| 3         | 2     | p    | qp INVALID → p | 3     |
+| 4         | 3     | q    | pq INVALID → q | 4     |
+| 5         | 4     | s    | qs INVALID → s | 5     |
+
+AtMostK(1)=5
+
+ExactlyK(2)=12−5=7
+
+class Solution {
+    public int countSubstr(String s, int k) {
+        //  code here
+        
+        return atMostK(s,k) - atMostK(s,k-1);
+        
+    }
+    
+    public static int atMostK(String s, int k){
+        int left=0;
+        int count =0;
+        
+        Map<Character,Integer> map = new HashMap<>();
+        
+        for (int right=0; right<s.length(); right++){
+            
+            char ch= s.charAt(right);
+            map.put(ch, map.getOrDefault(ch,0)+1);
+            
+            //shrink window
+            
+            while(map.size()>k){
+                char leftCh= s.charAt(left);
+                
+                map.put(leftCh, map.get(leftCh)-1);
+                
+                if(map.get(leftCh)==0){
+                    map.remove(leftCh);
+                }
+                
+                left++;
+            }
+            
+            count+= (right-left+1);
+        }
+        
+        return count;
+        
+    }
+}

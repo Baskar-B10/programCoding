@@ -1,0 +1,25 @@
+input : 1 2 3 4 5
+output : 2 1 4 3 5
+
+input 2 4 7 8 9 10
+output 4 2 8 7 10 9
+
+logic:
+  swap the alternative element 
+  for last element if there is no other element then keep as it is
+
+
+class Solution {
+    public void sortInWave(int arr[]) {
+        // code here
+        int n = arr.length;
+        
+        for(int i=0; i<n ; i+=2){
+            if(i!=n-1){
+            int temp = arr[i];
+            arr[i]= arr[i+1];
+            arr[i+1]= temp;
+            }
+        }
+    }
+}
